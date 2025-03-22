@@ -27,6 +27,11 @@ public class GameManager : MonoBehaviour
 		_instance = this;
 	}
 
+	private void Start()
+	{
+		GoToGym();
+	}
+
 	public void GoToGym()
     {
 		gymObjects.SetActive(true);

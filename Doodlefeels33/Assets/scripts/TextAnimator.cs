@@ -15,7 +15,7 @@ public class TextAnimator : MonoBehaviour
 	bool _isMorph = false;
 
 	[SerializeField]
-	float timeBetweenTicks = 1f;
+	float timeBetweenTicks = 0.08f;
 	float _timeSinceLastTick = 0f;
 
 	[SerializeField]
