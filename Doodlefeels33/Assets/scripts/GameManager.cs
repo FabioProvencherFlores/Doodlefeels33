@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject dialogueObjects;
 
-	public NPCController _currentNPC;
+	public IDialogue _currentNPC;
 
 	private void Awake()
 	{
@@ -41,9 +41,10 @@ public class GameManager : MonoBehaviour
 		_currentNPC = null;
 	}
 
-	public void SetNewNPC(NPCController aNPC)
+	public void SetNewNPC(IDialogue aNPC)
 	{
 		_currentNPC = aNPC;
+		_currentNPC.InitNewDialogue();
 	}
 
     public void GoToDialogue()

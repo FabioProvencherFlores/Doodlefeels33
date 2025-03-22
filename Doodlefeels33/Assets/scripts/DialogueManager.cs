@@ -8,19 +8,44 @@ public class DialogueManager : MonoBehaviour
     [SerializeField]
     MeshRenderer npcRenderer;
 
-    private NPCController _npcController;
+    private IDialogue _npcController;
+    [SerializeField]
+    DialogueOption[] options;
 
     void Start()
     {
 		_npcController = GameManager.Instance._currentNPC;
-		textAnimator.SetAndStartAnimation(_npcController.GetNextDialogueString());
-		npcRenderer.material = _npcController.GetNPCMaterial();
+		npcRenderer.material = _npcController.spriteMaterial;
+        DoNewDialogueLoop();
+
+	}
+
+    public void ChooseDialogueOption(int anOptionID)
+    {
+
     }
 
-    public void InitDialogue(NPCController npcController)
+    public void InitDialogue(BeigeNPC npcController)
     {
         _npcController = npcController;
         textAnimator.SetAndStartAnimation(npcController.GetNextDialogueString());
+	}
+
+    private void DoNewDialogueLoop()
+    {
+		textAnimator.SetAndStartAnimation(_npcController.GetNextDialogueString());
+        string[] lineoptions = _npcController.GetDialogueOptions();
+        options[0].gameObject.SetActive(false);
+        options[1].gameObject.SetActive(false);
+        options[2].gameObject.SetActive(false);
+        options[3].gameObject.SetActive(false);
+
+
+        for (int i = 0; i < lineoptions.Length; i++)
+        {
+            options[i].gameObject.SetActive(true);
+            options[i].TextForOption.SetText(lineoptions[i]);
+        }
 	}
 
 }

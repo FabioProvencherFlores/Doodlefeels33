@@ -11,19 +11,17 @@ public class ClickableItem : MonoBehaviour
 	[SerializeField]
 	bool clickShouldGoToDialogue = true;
 
-	[Header("Debug Stuff")]
-	[SerializeField]
-	MeshRenderer _renderer;
-	[SerializeField]
-	Material hoverMaterial;
-	[SerializeField]
-	Material idleMaterial;
 
-	private NPCController _npcController;
+	[Header("Visual Feedback Stuff")]
+	[SerializeField]
+	Transform _spriteTransform;
+
+	private IDialogue _npcController;
 
 	private void Start()
 	{
-		_npcController = GetComponent<NPCController>();
+		_npcController = GetComponent<IDialogue>();
+		_spriteTransform = gameObject.transform;
 	}
 
 	private void Update()
@@ -65,13 +63,13 @@ public class ClickableItem : MonoBehaviour
 	private void ChangeToIdle()
 	{
 		print("change to idle");
-		_renderer.material = idleMaterial;
+		_spriteTransform.localScale = Vector3.one;
 		_isShowingHover = false;
 	}
 	private void ChangeToHovered()
 	{
 		print("change to hover");
-		_renderer.material = hoverMaterial;
+		_spriteTransform.localScale = Vector3.one * 1.1f;
 		_isShowingHover = true;
 	}
 
