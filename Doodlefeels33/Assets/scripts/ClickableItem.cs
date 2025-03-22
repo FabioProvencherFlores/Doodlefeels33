@@ -12,11 +12,15 @@ public class ClickableItem : MonoBehaviour
 	bool clickShouldGoToDialogue = true;
 
 
-	[Header("Visual Feedback Stuff")]
-	[SerializeField]
 	Transform _spriteTransform;
 
 	private IDialogue _npcController;
+	private Vector3 startingScale;
+
+	private void Awake()
+	{
+		startingScale = transform.localScale;
+	}
 
 	private void Start()
 	{
@@ -63,13 +67,13 @@ public class ClickableItem : MonoBehaviour
 	private void ChangeToIdle()
 	{
 		print("change to idle");
-		_spriteTransform.localScale = Vector3.one;
+		_spriteTransform.localScale = startingScale;
 		_isShowingHover = false;
 	}
 	private void ChangeToHovered()
 	{
 		print("change to hover");
-		_spriteTransform.localScale = Vector3.one * 1.1f;
+		_spriteTransform.localScale = startingScale * 1.1f;
 		_isShowingHover = true;
 	}
 

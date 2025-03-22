@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public interface IDialogue
@@ -11,87 +12,46 @@ public interface IDialogue
     public string[] GetDialogueOptions();
 	public Material spriteMaterial { get; }
 
+	public void ProcessDialogueOption(int optionID);
+	public SITUATION GetSituationID();
+	public int GetNPCID();
+	public bool IsGoodbyeADefaultOption() {  return true; }
 }
 
-public class BeigeNPC : MonoBehaviour, IDialogue
+public class NPCData
 {
-    [Header("Dialogue Data")]
-    [SerializeField]
-    Material customSprite;
-	public Material spriteMaterial
-	{
-		get
-		{
-			return customSprite;
-		}
-	}
+	public bool shouldGreatPlayer = true;
 
-	private bool _hasSaidGreeting = false;
-	string[] dialogueOptions;
+	// jail data
+	public bool playerWantsToJailMe = false;
+	public bool playerHasAskedForJail = false;
+	public void Reset()
+	{
+		playerWantsToJailMe = false;
+		shouldGreatPlayer = true;
+	}
+}
+
+public enum SITUATION
+{
+	INVALID,
+	NormalGreating,
+	AngryGreating,
+	AskedToGoToJail,
+	PassiveIdle,
+}
+
+
+public class BeigeNPC : MonoBehaviour
+{
+
+	NPCData myData;
+
+	protected string[] dialogueOptions;
 	public string[] GetDialogueOptions() { return dialogueOptions; }
-	string[] dialogueLines = new string[]
-	{
-		"Hello there!",
-		"What?"
-	};
+	public bool amMissing = false;
+	public bool amDead = false;
 
-    public string GetNextDialogueString()
-    {
-        if (!_hasSaidGreeting)
-        {
-			_hasSaidGreeting=true;
-			dialogueOptions = new string[] { "Why is you?", "Goodbye" };
-			return dialogueLines[0];
+	public bool amJailed = false;
 
-		}
-		else
-		{
-			dialogueOptions = new string[] { "Let's start again", "Goodbye" };
-			return dialogueLines[1];
-		}
-
-		return "I SHOULD NOT SAY THIS, I MUST HAVE FORGOTTEN SOMETHING";
-    }
-
-    public void InitNewDialogue()
-    {
-		_hasSaidGreeting = false;
-	}
 }
-
-public class BlueNPC : MonoBehaviour, IDialogue
-{
-	[Header("Dialogue Data")]
-	[SerializeField]
-	Material customSprite;
-
-	public Material spriteMaterial
-	{
-		get
-		{
-			return customSprite;
-		}
-	}
-
-	private bool _hasSaidGreeting = false;
-
-	public string GetNextDialogueString()
-	{
-		if (!_hasSaidGreeting)
-		{
-
-		}
-		return "TEMP";
-	}
-
-	public void InitNewDialogue()
-	{
-		_hasSaidGreeting = false;
-	}
-
-	public string[] GetDialogueOptions()
-	{
-		throw new System.NotImplementedException();
-	}
-}
-

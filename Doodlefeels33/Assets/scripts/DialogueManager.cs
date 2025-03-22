@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+
 public class DialogueManager : MonoBehaviour
 {
     [SerializeField]
@@ -12,30 +14,33 @@ public class DialogueManager : MonoBehaviour
     [SerializeField]
     DialogueOption[] options;
 
-    void Start()
-    {
-		_npcController = GameManager.Instance._currentNPC;
-		npcRenderer.material = _npcController.spriteMaterial;
-        DoNewDialogueLoop();
+    public bool jailIsAvailable = true;
 
-	}
 
     public void ChooseDialogueOption(int anOptionID)
     {
-        if (anOptionID == 0)
+        if (anOptionID < 0)
         {
-            DoNewDialogueLoop();
+            Debug.LogError("Invalid dialogue choice", this);
         }
-		else if (anOptionID == 1)
-		{
-            GameManager.Instance.GoToGym();
-		}
+        
+        _npcController.ProcessDialogueOption(anOptionID);
+        DoNewDialogueLoop();
 	}
 
-    public void InitDialogue(BeigeNPC npcController)
+    public void InitDialogue(IDialogue npcController)
     {
-        _npcController = npcController;
-        textAnimator.SetAndStartAnimation(npcController.GetNextDialogueString());
+		_npcController = npcController;
+		npcRenderer.material = _npcController.spriteMaterial;
+		textAnimator.SetAndStartAnimation(npcController.GetNextDialogueString());
+        DoNewDialogueLoop();
+	}
+
+    public void ClickedJail()
+    {
+        _npcController.ProcessDialogueOption(4);
+        DoNewDialogueLoop();
+
 	}
 
     private void DoNewDialogueLoop()
@@ -47,6 +52,12 @@ public class DialogueManager : MonoBehaviour
         options[2].gameObject.SetActive(false);
         options[3].gameObject.SetActive(false);
 
+        if (lineoptions.Length <  4 && _npcController.IsGoodbyeADefaultOption())
+        {
+            options[3].gameObject.SetActive(true);
+            options[3].TextForOption.SetText("Goodbye.");
+
+        }
 
         for (int i = 0; i < lineoptions.Length; i++)
         {
