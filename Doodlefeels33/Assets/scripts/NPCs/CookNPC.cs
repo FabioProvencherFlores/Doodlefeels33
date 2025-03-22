@@ -12,7 +12,6 @@ public class CookNPC : BeigeNPC, IDialogue
 			return customSprite;
 		}
 	}
-	NPCData myData = new NPCData();
 
 	bool removeGoodbye = false;
 	public bool IsGoodbyeADefaultOption() { return !removeGoodbye; }
@@ -20,6 +19,19 @@ public class CookNPC : BeigeNPC, IDialogue
 	public int GetNPCID()
 	{
 		return 0;
+	}
+
+	public override string GetJailLine()
+	{
+		if (myData.daysInPrison < 2)
+		{
+			return "Come on, won't you get hungry without me?";
+		}
+
+		else
+		{
+			return "Open the fucking door or I'll chop you into tiny darn pieces!";
+		}
 	}
 
 	public string GetNextDialogueString()

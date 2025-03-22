@@ -66,13 +66,11 @@ public class ClickableItem : MonoBehaviour
 
 	private void ChangeToIdle()
 	{
-		print("change to idle");
 		_spriteTransform.localScale = startingScale;
 		_isShowingHover = false;
 	}
 	private void ChangeToHovered()
 	{
-		print("change to hover");
 		_spriteTransform.localScale = startingScale * 1.1f;
 		_isShowingHover = true;
 	}

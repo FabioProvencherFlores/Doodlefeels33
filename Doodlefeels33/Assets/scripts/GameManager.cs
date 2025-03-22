@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
 	Material debugEmpty;
 	[SerializeField]
 	Material debugNotEmpty;
+	[SerializeField]
+	TextAnimator jailDialogue;
+	BeigeNPC jailedNPC;
 
 	[Header("Day night cycle")]
 	[SerializeField]
@@ -39,6 +42,8 @@ public class GameManager : MonoBehaviour
     GameObject gymObjects;
     [SerializeField]
     GameObject dialogueObjects;
+    [SerializeField]
+    GameObject jailObjects;
 
 	[Header("Dialogue Data")]
 	[SerializeField]
@@ -107,19 +112,11 @@ public class GameManager : MonoBehaviour
 	public void PutCurrentNPCInJail()
 	{
 		BeigeNPC npc = GetNPCFromID(_currentNPC.GetNPCID());
+		jailedNPC = npc;
 		npc.amMissing = true;
 		npc.amJailed = true;
 	}
 
-	public void GoToGym()
-    {
-		gymObjects.SetActive(true);
-		dialogueObjects.SetActive(false);
-		_currentNPC = null;
-
-
-		RefreshNPCPresence();
-	}
 
 	public void RefreshNPCPresence()
 	{
@@ -130,8 +127,10 @@ public class GameManager : MonoBehaviour
 			_cookNPC.gameObject.SetActive(false);
 			_hasJailedNPC |= _cookNPC.amJailed;
 		}
-
-
+		else
+		{
+			_cookNPC.gameObject.SetActive(true);
+		}
 
 
 		if (_hasJailedNPC)
@@ -166,7 +165,56 @@ public class GameManager : MonoBehaviour
 		remainingInteractions--;
 		((IDialogue)_currentNPC).InitNewDialogue();
 		gymObjects.SetActive(false);
+		jailObjects.SetActive(false);
 		dialogueObjects.SetActive(true);
 		dialogueManager.InitDialogue((IDialogue)_currentNPC);
+	}
+	public void GoToGym()
+	{
+		gymObjects.SetActive(true);
+		jailObjects.SetActive(false);
+		dialogueObjects.SetActive(false);
+		_currentNPC = null;
+
+
+		RefreshNPCPresence();
+	}
+
+	public void FreePrisonner()
+	{
+		jailedNPC.amMissing = false;
+		jailedNPC.amJailed = false;
+		jailedNPC = null;
+		GoToGym();
+	}
+
+	public void GoToJail()
+	{
+		if (remainingInteractions < 1)
+		{
+			return;
+		}
+
+		remainingInteractions--;
+
+		_currentNPC = null;
+		gymObjects.SetActive(false);
+		dialogueObjects.SetActive(false);
+		jailObjects.SetActive(true);
+
+		jailDialogue.SetAndStartAnimation("");
+		jailDialogue.ForceFullText();
+
+		if (jailedNPC != null)
+		{
+			jailDialogue.SetAndStartAnimation(jailedNPC.GetJailLine());
+		}
+		else
+		{
+			jailDialogue.SetAndStartAnimation("No one...");
+		}
+
+		(jailedNPC.myData.daysInPrison)++;
+		print((jailedNPC.myData.daysInPrison));
 	}
 }

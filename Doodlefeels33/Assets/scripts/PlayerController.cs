@@ -21,10 +21,17 @@ public class PlayerController : MonoBehaviour
 			{
 				//print("clickable hit");
 				click.HoverOverTimestamp();
-				if (clicked && click.ShouldGoToDialogue())
+				if (clicked)
 				{
 					click.OnClick();
-					GameManager.Instance.GoToDialogue();
+					if (click.ShouldGoToDialogue())
+					{
+						GameManager.Instance.GoToDialogue();
+					}
+					else
+					{
+						GameManager.Instance.GoToJail();
+					}
 				}
 			}
 		}

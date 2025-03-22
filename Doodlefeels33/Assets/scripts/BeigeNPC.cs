@@ -25,6 +25,7 @@ public class NPCData
 	// jail data
 	public bool playerWantsToJailMe = false;
 	public bool playerHasAskedForJail = false;
+	public int daysInPrison = 0;
 	public void Reset()
 	{
 		playerWantsToJailMe = false;
@@ -45,7 +46,7 @@ public enum SITUATION
 public class BeigeNPC : MonoBehaviour
 {
 
-	NPCData myData;
+	public NPCData myData = new NPCData();
 
 	protected string[] dialogueOptions;
 	public string[] GetDialogueOptions() { return dialogueOptions; }
@@ -53,5 +54,7 @@ public class BeigeNPC : MonoBehaviour
 	public bool amDead = false;
 
 	public bool amJailed = false;
+
+	public virtual string GetJailLine() { return "I got nothing to say to you..."; }
 
 }
