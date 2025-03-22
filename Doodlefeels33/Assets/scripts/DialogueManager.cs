@@ -4,10 +4,23 @@ public class DialogueManager : MonoBehaviour
 {
     [SerializeField]
     TextAnimator textAnimator;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [SerializeField]
+    MeshRenderer npcRenderer;
+
+    private NPCController _npcController;
+
     void Start()
     {
-        textAnimator.StartAnimation();
+		_npcController = GameManager.Instance._currentNPC;
+		textAnimator.SetAndStartAnimation(_npcController.GetNextDialogueString());
+		npcRenderer.material = _npcController.GetNPCMaterial();
     }
+
+    public void InitDialogue(NPCController npcController)
+    {
+        _npcController = npcController;
+        textAnimator.SetAndStartAnimation(npcController.GetNextDialogueString());
+	}
 
 }

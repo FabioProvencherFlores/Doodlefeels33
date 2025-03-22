@@ -51,7 +51,6 @@ public class ClickableItem : MonoBehaviour
 
 	public void OnClick()
 	{
-
 		if (_npcController != null)
 		{
 			GameManager.Instance.SetNewNPC(_npcController);

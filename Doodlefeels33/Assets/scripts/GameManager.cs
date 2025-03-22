@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject dialogueObjects;
 
-	private NPCController _currentNPC;
+	public NPCController _currentNPC;
 
 	private void Awake()
 	{
@@ -50,5 +50,6 @@ public class GameManager : MonoBehaviour
     {
 		gymObjects.SetActive(false);
 		dialogueObjects.SetActive(true);
+
 	}
 }

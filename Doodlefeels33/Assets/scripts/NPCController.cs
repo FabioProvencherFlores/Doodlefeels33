@@ -2,9 +2,17 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Dialogue Data")]
+    [SerializeField]
+    Material spriteMaterial;
+
     public string GetNextDialogueString()
     {
         return "TEMP";
+    }
+
+    public Material GetNPCMaterial()
+    {
+        return spriteMaterial;
     }
 }
