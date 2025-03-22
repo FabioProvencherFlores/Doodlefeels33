@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
 				click.HoverOverTimestamp();
 				if (clicked && click.ShouldGoToDialogue())
 				{
+					click.OnClick();
 					GameManager.Instance.GoToDialogue();
 				}
 			}
