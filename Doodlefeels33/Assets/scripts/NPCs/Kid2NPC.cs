@@ -29,7 +29,7 @@ public class Kid2NPC : BeigeNPC, IDialogue
 
 	}
 
-	public SITUATION GetSituationID()
+	public SITUATION GetInitialContext()
 	{
 		return SITUATION.INVALID;
 	}

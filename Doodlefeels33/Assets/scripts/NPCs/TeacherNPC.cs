@@ -28,7 +28,7 @@ public class TeacherNPC : BeigeNPC, IDialogue
 
 	}
 
-	public SITUATION GetSituationID()
+	public SITUATION GetInitialContext()
 	{
 		return SITUATION.INVALID;
 	}

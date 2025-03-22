@@ -33,32 +33,77 @@ public class CookNPC : BeigeNPC, IDialogue
 			return "Open the fucking door or I'll chop you into tiny darn pieces!";
 		}
 	}
-
+	int _numberOfSmalltalk = 0;
+	bool _alreadyaskedName = false;
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
-		SITUATION currentSituation = GetSituationID();
+		SITUATION previousSituation = currentContext;
+		currentContext = nextContext;
 		string currentline = "I SHOULD NOT SAY THIS, FAB MUST HAVE FORGOTTEN SOMETHING";
-		switch (currentSituation)
+		switch (currentContext)
 		{
 			case SITUATION.NormalGreating:
 				currentline = "You hungry?";
 				dialogueOptions = new string[] { "Who are you?", "What's cooking? It smells delicious." };
 				break;
-
-			case SITUATION.AskedToGoToJail:
-				currentline = "Are you sure?";
-				removeGoodbye = true;
-				dialogueOptions = new string[] { "I Changed my mind...", "Get in the cell." };
+			case SITUATION.PlayerAskedName:
+				if (_alreadyaskedName)
+				{
+					currentline = "I'm Harry fucking Potter. Now go!";
+				}
+				else
+				{
+					_alreadyaskedName = true;
+					currentline = "Nowadays, I'm just the cook. That's fine by me.";
+				}
+				dialogueOptions = new string[] { "Have you been here long?", "What are you doing?." };
+				break;
+			case SITUATION.BackedDownFromJailRequest:
+				currentline = "I swear, you pull some stupid joke like that on me again...";
+				dialogueOptions = new string[] { "Have you been here long?", "What are you doing?." };
+				break;
+			case SITUATION.SmallTalk:
+				if (_numberOfSmalltalk == 0)
+				{
+					currentline = "Listen, you seem fine and talky... but I got to feed y'all mouths.";
+					dialogueOptions = new string[] { "You're the chef, right?", "I bet it's gonna be real good!" };
+				}
+				else if (_numberOfSmalltalk == 1)
+				{
+					currentline = "Sure.";
+					dialogueOptions = new string[] { "What's your name, then?", "Glad we still got some food back there!", "Where are we?" };
+				}
+				else
+				{
+					currentline = "Hmph.";
+					dialogueOptions = new string[] { "I didn't get your name...", "", "Where are we?" };
+				}
+				_numberOfSmalltalk++;
 				break;
 
-			case SITUATION.PassiveIdle:
-				currentline = "What?";
-				dialogueOptions = new string[] { "Let's start again"};
+			case SITUATION.PlayerAskedWhereAreWe:
+				currentline = "You got sunblind? You should check with that sleepy doctor over there.";
+				break;
+			case SITUATION.Apologize:
+				currentline = "Good.";
+				break;
+			case SITUATION.AskedToGoToJail:
+				currentline = "What fuck, why?";
+				removeGoodbye = true;
+				dialogueOptions = new string[] { "I Changed my mind...", "Get in the cell." };
 				break;
 			case SITUATION.AngryGreating:
 				currentline = "You again. What do you want?";
 				dialogueOptions = new string[] { "Let's start again" };
+				break;
+			case SITUATION.PlayerAskedHowLong:
+				currentline = "Been here a while. I think only that teacher was here before I was. Days get fuzzy, can't remember much.";
+				dialogueOptions = new string[] { "Good to know!" };
+				break;
+			case SITUATION.PlayerAskedWhatYouDoing:
+				currentline = "I'm making diner. You blind?";
+				dialogueOptions = new string[] { "Ok, that's nice." };
 				break;
 
 		}
@@ -66,34 +111,78 @@ public class CookNPC : BeigeNPC, IDialogue
 		return currentline;
 	}
 
+	bool _playerJustaskedName = false;
+	bool _playerAskedWhatCooks = false;
+
 	public void ProcessDialogueOption(int optionID)
 	{
-		// 4 is jail
-		if (optionID == 4)
-		{
-			myData.playerWantsToJailMe = true;
-			myData.playerHasAskedForJail = true;
-		}
+		_playerJustaskedName = false;
+		_playerAskedWhatCooks = false;
 
-		SITUATION currentSituation = GetSituationID();
-
-		switch (currentSituation)
+		switch (currentContext)
 		{
+			case SITUATION.PlayerAskedName:
+				myData.shouldGreatPlayer = false;
+				if (optionID == 0)
+				{
+					nextContext = SITUATION.PlayerAskedHowLong;
+				}
+				else if (optionID == 1)
+				{
+					nextContext = SITUATION.PlayerAskedWhatYouDoing;
+				}
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.SmallTalk:
+				myData.shouldGreatPlayer = false;
+				if (optionID == 0)
+				{
+					nextContext = SITUATION.PlayerAskedName;
+				}
+				else if (optionID == 1)
+				{
+					nextContext = SITUATION.SmallTalk;
+				}
+				else if (optionID == 2)
+				{
+					nextContext = SITUATION.PlayerAskedWhereAreWe;
+				}
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerAskedHowLong:
+			case SITUATION.PlayerAskedWhatYouDoing:
+				nextContext = SITUATION.SmallTalk;
+				goto case SITUATION.PassiveChecks; ;
 			case SITUATION.NormalGreating:
 				myData.shouldGreatPlayer = false;
-				goto case SITUATION.PassiveIdle;
+				if (optionID == 0)
+				{
+					nextContext = SITUATION.PlayerAskedName;
+				}
+				else if (optionID == 1)
+				{
+					nextContext = SITUATION.SmallTalk;
+				}
+				goto case SITUATION.PassiveChecks;
 
 			case SITUATION.AskedToGoToJail:
 				if (optionID == 0)
+				{
+					nextContext = SITUATION.BackedDownFromJailRequest;
 					myData.playerWantsToJailMe = false;
+				}
 				else if (optionID == 1)
 				{
 					GameManager.Instance.PutCurrentNPCInJail();
 					GameManager.Instance.GoToGym();
 				}
-				break;
+				break;			
+			case SITUATION.BackedDownFromJailRequest:
+				if (optionID == 0)
+				{
+					nextContext = SITUATION.Apologize;
+				}
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.AngryGreating:
-			case SITUATION.PassiveIdle:
+			case SITUATION.PassiveChecks:
 			default:
 				if (optionID == 3)
 				{
@@ -101,9 +190,18 @@ public class CookNPC : BeigeNPC, IDialogue
 				}
 				break;
 		}
+
+		// 4 is jail
+		if (optionID == 4)
+		{
+			nextContext = SITUATION.AskedToGoToJail;
+			myData.playerWantsToJailMe = true;
+			myData.playerHasAskedForJail = true;
+		}
+
 	}
 
-	public SITUATION GetSituationID()
+	public SITUATION GetInitialContext()
 	{
 		if (myData.playerWantsToJailMe)
 		{
@@ -121,14 +219,14 @@ public class CookNPC : BeigeNPC, IDialogue
 				return SITUATION.NormalGreating;
 			}
 		}
-		else
-		{
-			return SITUATION.PassiveIdle;
-		}
+
+		return SITUATION.INVALID;
 	}
 
 	public void InitNewDialogue()
 	{
+		currentContext = GetInitialContext();
+		nextContext	= currentContext;
 		myData.Reset();
 	}
 }

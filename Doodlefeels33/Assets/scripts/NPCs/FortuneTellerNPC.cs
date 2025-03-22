@@ -29,7 +29,7 @@ public class FortuneTellerNPC : BeigeNPC, IDialogue
 
 	}
 
-	public SITUATION GetSituationID()
+	public SITUATION GetInitialContext()
 	{
 		return SITUATION.INVALID;
 	}

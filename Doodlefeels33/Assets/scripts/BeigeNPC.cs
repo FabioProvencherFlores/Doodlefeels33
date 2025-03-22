@@ -13,7 +13,7 @@ public interface IDialogue
 	public Material spriteMaterial { get; }
 
 	public void ProcessDialogueOption(int optionID);
-	public SITUATION GetSituationID();
+	public SITUATION GetInitialContext();
 	public int GetNPCID();
 	public bool IsGoodbyeADefaultOption() {  return true; }
 }
@@ -39,8 +39,14 @@ public enum SITUATION
 	NormalGreating,
 	AngryGreating,
 	AskedToGoToJail,
-	PassiveIdle,
+	PassiveChecks,
 	PlayerAskedName,
+	SmallTalk,
+	BackedDownFromJailRequest,
+	Apologize,
+	PlayerAskedWhereAreWe,
+	PlayerAskedHowLong,
+	PlayerAskedWhatYouDoing
 }
 
 
@@ -55,6 +61,9 @@ public class BeigeNPC : MonoBehaviour
 	public bool amDead = false;
 
 	public bool amJailed = false;
+
+	protected SITUATION currentContext;
+	protected SITUATION nextContext;
 
 	public virtual string GetJailLine() { return "I got nothing to say to you..."; }
 

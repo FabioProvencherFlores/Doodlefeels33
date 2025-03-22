@@ -29,7 +29,7 @@ public class Kid1NPC : BeigeNPC, IDialogue
 
 	}
 
-	public SITUATION GetSituationID()
+	public SITUATION GetInitialContext()
 	{
 		return SITUATION.INVALID;
 	}
@@ -41,6 +41,6 @@ public class Kid1NPC : BeigeNPC, IDialogue
 
 	public bool IsGoodbyeADefaultOption()
 	{
-		return false;
+		return true;
 	}
 }
