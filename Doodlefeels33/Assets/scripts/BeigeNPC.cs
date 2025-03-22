@@ -48,7 +48,7 @@ public class BeigeNPC : MonoBehaviour
 
 	public NPCData myData = new NPCData();
 
-	protected string[] dialogueOptions;
+	protected string[] dialogueOptions = { "" };
 	public string[] GetDialogueOptions() { return dialogueOptions; }
 	public bool amMissing = false;
 	public bool amDead = false;

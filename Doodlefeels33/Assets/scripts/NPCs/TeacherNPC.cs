@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-public class FortuneTellerNPC : BeigeNPC, IDialogue
+public class TeacherNPC : BeigeNPC, IDialogue
 {
 	[Header("Dialogue Data")]
 	[SerializeField]

@@ -1,16 +1,46 @@
+using System;
 using UnityEngine;
 
-public class itNPC : MonoBehaviour
+public class itNPC : BeigeNPC, IDialogue
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	[Header("Dialogue Data")]
+	[SerializeField]
+	public Material customSprite;
+	public Material spriteMaterial
+	{
+		get
+		{
+			return customSprite;
+		}
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public string GetNextDialogueString()
+	{
+		return "";
+	}
+
+	public void InitNewDialogue()
+	{
+
+	}
+
+	public void ProcessDialogueOption(int optionID)
+	{
+
+	}
+
+	public SITUATION GetSituationID()
+	{
+		return SITUATION.INVALID;
+	}
+
+	public int GetNPCID()
+	{
+		return -1;
+	}
+
+	public bool IsGoodbyeADefaultOption()
+	{
+		return true;
+	}
 }
