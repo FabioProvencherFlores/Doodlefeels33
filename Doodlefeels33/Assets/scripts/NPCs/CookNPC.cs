@@ -43,7 +43,7 @@ public class CookNPC : BeigeNPC, IDialogue
 		{
 			case SITUATION.NormalGreating:
 				currentline = "You hungry?";
-				dialogueOptions = new string[] { "Why is you?" };
+				dialogueOptions = new string[] { "Who are you?", "What's cooking? It smells delicious." };
 				break;
 
 			case SITUATION.AskedToGoToJail:
@@ -81,7 +81,7 @@ public class CookNPC : BeigeNPC, IDialogue
 		{
 			case SITUATION.NormalGreating:
 				myData.shouldGreatPlayer = false;
-				break;
+				goto case SITUATION.PassiveIdle;
 
 			case SITUATION.AskedToGoToJail:
 				if (optionID == 0)

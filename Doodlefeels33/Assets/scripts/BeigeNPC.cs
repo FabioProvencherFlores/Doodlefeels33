@@ -40,6 +40,7 @@ public enum SITUATION
 	AngryGreating,
 	AskedToGoToJail,
 	PassiveIdle,
+	PlayerAskedName,
 }
 
 
