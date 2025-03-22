@@ -19,6 +19,12 @@ public class ClickableItem : MonoBehaviour
 	[SerializeField]
 	Material idleMaterial;
 
+	private NPCController _npcController;
+
+	private void Start()
+	{
+		_npcController = GetComponent<NPCController>();
+	}
 
 	private void Update()
 	{
@@ -41,6 +47,15 @@ public class ClickableItem : MonoBehaviour
 		}
 
 
+	}
+
+	public void OnClick()
+	{
+
+		if (_npcController != null)
+		{
+			GameManager.Instance.SetNewNPC(_npcController);
+		}
 	}
 
 	public bool ShouldGoToDialogue()

@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject dialogueObjects;
 
+	private NPCController _currentNPC;
+
 	private void Awake()
 	{
 		_instance = this;
@@ -36,7 +38,12 @@ public class GameManager : MonoBehaviour
     {
 		gymObjects.SetActive(true);
 		dialogueObjects.SetActive(false);
+		_currentNPC = null;
+	}
 
+	public void SetNewNPC(NPCController aNPC)
+	{
+		_currentNPC = aNPC;
 	}
 
     public void GoToDialogue()
