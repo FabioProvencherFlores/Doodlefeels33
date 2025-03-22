@@ -22,8 +22,15 @@ public class DialogueManager : MonoBehaviour
 
     public void ChooseDialogueOption(int anOptionID)
     {
-
-    }
+        if (anOptionID == 0)
+        {
+            DoNewDialogueLoop();
+        }
+		else if (anOptionID == 1)
+		{
+            GameManager.Instance.GoToGym();
+		}
+	}
 
     public void InitDialogue(BeigeNPC npcController)
     {
