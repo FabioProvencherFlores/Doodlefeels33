@@ -30,6 +30,11 @@ public class ClickableItem : MonoBehaviour
 
 	private void Update()
 	{
+		if (!GameManager.Instance.AreInteractionsRemaining())
+		{
+			return;
+		}
+
 		if (_isHovered)
 		{
 			if (_lastHoverTime + hoverGracePeriod < Time.time)

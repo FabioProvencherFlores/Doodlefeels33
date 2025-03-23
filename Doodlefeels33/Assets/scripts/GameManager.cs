@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviour
 	Material debugNotEmpty;
 	[SerializeField]
 	TextAnimator jailDialogue;
-	BeigeNPC jailedNPC;
+	List<BeigeNPC> jailedNPCs = new List<BeigeNPC>();
 
 	[Header("Day night cycle")]
 	[SerializeField]
@@ -55,6 +56,11 @@ public class GameManager : MonoBehaviour
 	[SerializeField] CookNPC _cookNPC;
 	[SerializeField] MedicNPC _medicNPC;
 	[SerializeField] TeacherNPC _teachNPC;
+
+	public bool AreInteractionsRemaining()
+	{
+		return remainingInteractions > 0;
+	}
 
 	private void Awake()
 	{
@@ -129,7 +135,7 @@ public class GameManager : MonoBehaviour
 	public void PutCurrentNPCInJail()
 	{
 		BeigeNPC npc = GetNPCFromID(_currentNPC.GetNPCID());
-		jailedNPC = npc;
+		jailedNPCs.Add(npc);
 		npc.amMissing = true;
 		npc.amJailed = true;
 	}
@@ -219,9 +225,12 @@ public class GameManager : MonoBehaviour
 
 	public void FreePrisonner()
 	{
-		jailedNPC.amMissing = false;
-		jailedNPC.amJailed = false;
-		jailedNPC = null;
+		foreach (BeigeNPC prisoner in jailedNPCs)
+		{
+			prisoner.amMissing = false;
+			prisoner.amJailed = false;
+		}
+		jailedNPCs.Clear();
 		GoToGym();
 	}
 
@@ -242,16 +251,17 @@ public class GameManager : MonoBehaviour
 		jailDialogue.SetAndStartAnimation("");
 		jailDialogue.ForceFullText();
 
-		if (jailedNPC != null)
+		if (jailedNPCs.Count > 0)
 		{
-			jailDialogue.SetAndStartAnimation(jailedNPC.GetJailLine());
+			jailDialogue.SetAndStartAnimation(jailedNPCs[0].GetJailLine());
 		}
 		else
 		{
 			jailDialogue.SetAndStartAnimation("No one...");
 		}
-
-		(jailedNPC.myData.daysInPrison)++;
-		print((jailedNPC.myData.daysInPrison));
+		foreach (BeigeNPC prisoner in jailedNPCs)
+		{
+			(prisoner.myData.daysInPrison)++;
+		}
 	}
 }
