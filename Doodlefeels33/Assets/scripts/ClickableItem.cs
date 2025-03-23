@@ -17,13 +17,19 @@ public class ClickableItem : MonoBehaviour
 	private IDialogue _npcController;
 	private Vector3 startingScale;
 
+	private AudioSource sfx_click;
+	
+
+
 	private void Awake()
 	{
 		startingScale = transform.localScale;
+		
 	}
 
 	private void Start()
 	{
+		sfx_click = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
 		_npcController = GetComponent<IDialogue>();
 		_spriteTransform = gameObject.transform;
 	}
@@ -58,6 +64,7 @@ public class ClickableItem : MonoBehaviour
 
 	public void OnClick()
 	{
+		sfx_click.Play();
 		if (_npcController != null)
 		{
 			GameManager.Instance.SetNewNPC(_npcController);
