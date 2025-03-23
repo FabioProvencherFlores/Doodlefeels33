@@ -152,6 +152,7 @@ public class GameManager : MonoBehaviour
 
 		if (everyoneDied)
 		{
+			redSquareForDeath.SetActive(true);
 			StartCoroutine(GotToFailureScreen());
 			return;
 		}
