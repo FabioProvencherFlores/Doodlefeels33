@@ -225,7 +225,7 @@ public class GameManager : MonoBehaviour
 
 		if (noOneDied)
 		{
-			if (nbDayHisteriaTeacher > 2)
+			if (nbDayHisteriaTeacher > 1)
 			{
 				if (!_cookNPC.amDead && !_teachNPC.amDead && _cookNPC.amJailed == _teachNPC.amJailed)
 				{
