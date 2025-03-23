@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
 	GameObject goToBedButton;
 	[SerializeField]
 	GameObject blackSquareForNight;
+	[SerializeField]
+	GameObject redSquareForDeath;
 
 	[Header("Scene management")]
 	[SerializeField]
@@ -163,7 +165,9 @@ public class GameManager : MonoBehaviour
 		if (kid1WillKillMe && !_kid1NPC.amDead && !_kid1NPC.amJailed)
 		{
 			_currentNPC = _kid1NPC;
+			_kid1NPC.InitNewDialogue();
 			GoToDialogue();
+
 			return;
 		}
 
@@ -175,6 +179,7 @@ public class GameManager : MonoBehaviour
 		yield return new WaitForSeconds(1);
 
 		// change scene here
+		Debug.Log(":(");
 	}
 
 	public IEnumerator GoToWinScreen()
@@ -182,6 +187,7 @@ public class GameManager : MonoBehaviour
 		yield return new WaitForSeconds(1);
 		
 		// change scene here
+		Debug.Log(":)");
 	}
 
 	public void GoToSleep()
@@ -279,6 +285,12 @@ public class GameManager : MonoBehaviour
 
 	public void RefreshNPCPresence()
 	{
+		if (_kid1NPC.kid1KilledPlayer)
+		{
+			redSquareForDeath.SetActive(true);
+			StartCoroutine(GotToFailureScreen());
+		}
+
 		_hasJailedNPC = false;
 
 		if (_cookNPC.amMissing)

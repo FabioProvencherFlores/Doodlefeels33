@@ -69,13 +69,13 @@ public class DialogueManager : MonoBehaviour
         options[2].gameObject.SetActive(false);
         options[3].gameObject.SetActive(false);
 
-		if ((lineoptions.Count > 3 && _npcController.IsGoodbyeADefaultOption()) ||(lineoptions.Count == 4 && !_npcController.IsGoodbyeADefaultOption()))
+		if ((lineoptions.Count > 3 && _npcController.IsGoodbyeADefaultOption()) ||(lineoptions.Count == 4 && _npcController.IsGoodbyeADefaultOption()))
 		{
             Debug.LogError("too many dialogue options in the line " + _npcController.GetNextDialogueString());
 
 		}
 
-        StartCoroutine(WaitTextAndPrintOptions());
+        if (gameObject.activeInHierarchy) StartCoroutine(WaitTextAndPrintOptions());
 	}
 
 	IEnumerator WaitTextAndPrintOptions()

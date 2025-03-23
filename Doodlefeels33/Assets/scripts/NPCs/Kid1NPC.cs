@@ -43,6 +43,7 @@ public class Kid1NPC : BeigeNPC, IDialogue
 				dialogueOptions.Add("Calm down. I was kidding!");
 				dialogueOptions.Add("Get into the room. Now!");
 				break;
+			case SITUATION.AngryGreating:
 			case SITUATION.BackedDownFromJailRequest:
 				currentline = "...";
 				break;
@@ -52,7 +53,7 @@ public class Kid1NPC : BeigeNPC, IDialogue
 		return currentline;
 	}
 
-
+	public bool kid1KilledPlayer = false;
 	public void ProcessDialogueOption(int optionID)
 	{
 		switch (currentContext)
@@ -66,7 +67,14 @@ public class Kid1NPC : BeigeNPC, IDialogue
 				}
 				else if (optionID != 4)
 				{
-					StartCoroutine(GameManager.Instance.GotToFailureScreen());
+					kid1KilledPlayer = true;
+					GameManager.Instance.GoToGym();
+					return;
+				}
+				else if (optionID == 4)
+				{
+					GameManager.Instance.PutCurrentNPCInJail();
+					GameManager.Instance.GoToGym();
 					return;
 				}
 				break;
@@ -82,7 +90,7 @@ public class Kid1NPC : BeigeNPC, IDialogue
 				}
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.NormalGreating:
-				goto case SITUATION.PassiveChecks;
+			case SITUATION.AngryGreating:
 			case SITUATION.BackedDownFromJailRequest:
 			case SITUATION.PassiveChecks:
 			default:
@@ -103,7 +111,8 @@ public class Kid1NPC : BeigeNPC, IDialogue
 
 	public SITUATION GetInitialContext()
 	{
-		if (GameManager.Instance.kid1WillKillMe) return SITUATION.NPCAggroPlayer;
+		if (GameManager.Instance.kid1WillKillMe && !myData.playerWantsToJailMe) return SITUATION.NPCAggroPlayer;
+		if (myData.playerWantsToJailMe) return SITUATION.AngryGreating;
 		return SITUATION.NormalGreating;
 	}
 
