@@ -59,6 +59,10 @@ public class GameManager : MonoBehaviour
 	[SerializeField] TeacherNPC _teachNPC;
 	[SerializeField] Kid2NPC _kid2NPC;
 
+	[Header("The killing")]
+	[SerializeField]
+	GameObject bloodSplatter;
+
 	public bool AreInteractionsRemaining()
 	{
 		return remainingInteractions > 0;
