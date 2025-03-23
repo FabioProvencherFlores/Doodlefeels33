@@ -134,7 +134,38 @@ public class GameManager : MonoBehaviour
 		kid2WasJailedToday = _kid2NPC.amJailed;
 		daysSinceStart++;
 
+		bool everyoneDied = true;
+		if (!_contructionNPC.amDead) everyoneDied = false;
+		if (!_antiquarianNPC.amDead) everyoneDied = false;
+		if (!_veteranNPC.amDead) everyoneDied = false;
+		if (!_kid1NPC.amDead) everyoneDied = false;
+		if (!_medicNPC.amDead) everyoneDied = false;
+		if (!_fortuneTellerNPC.amDead) everyoneDied = false;
+		if (!_itNPC.amDead) everyoneDied = false;
+		if (!_cookNPC.amDead) everyoneDied = false;
+		if (!_teachNPC.amDead) everyoneDied = false;
+
+		if (everyoneDied)
+		{
+			GotToFailureScreen();
+		}
+
+		if (daysWithoutInsident >= 3)
+		{
+			GoToWinScreen();
+		}
+
 		GoToGym();
+	}
+
+	void GotToFailureScreen()
+	{
+
+	}
+
+	void GoToWinScreen()
+	{
+
 	}
 
 	public void GoToSleep()
