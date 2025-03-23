@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
 
 	[Header("All NPCs")]
 	[SerializeField] CookNPC _cookNPC;
+	[SerializeField] MedicNPC _medicNPC;
+	[SerializeField] TeacherNPC _teachNPC;
 
 	private void Awake()
 	{
@@ -65,6 +67,10 @@ public class GameManager : MonoBehaviour
 		{
 			Debug.LogError("Missing cook", this);
 		}
+		if (_cookNPC == null)
+		{
+			Debug.LogError("Missing teacher", this);
+		}
 	}
 
 	BeigeNPC GetNPCFromID(int id)
@@ -73,6 +79,16 @@ public class GameManager : MonoBehaviour
 		{
 			return _cookNPC;
 		}
+		if (id == 1)
+		{
+			return _medicNPC;
+		}
+		if (id == 7)
+		{
+			return _teachNPC;
+		}
+
+		Debug.LogError("You forgot the NPC ID", this);
 
 		return null;
 	}
@@ -82,6 +98,7 @@ public class GameManager : MonoBehaviour
 		// fade in
 		blackSquareForNight.SetActive(false);
 		remainingInteractions = nbOfInteractionsPerDay;
+		_medicNPC._willrefusetotalkuntiltomorrow = false;
 	}
 
 	public void GoToSleep()
@@ -130,6 +147,26 @@ public class GameManager : MonoBehaviour
 		else
 		{
 			_cookNPC.gameObject.SetActive(true);
+		}
+		
+		if (_teachNPC.amMissing)
+		{
+			_teachNPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _teachNPC.amJailed;
+		}
+		else
+		{
+			_teachNPC.gameObject.SetActive(true);
+		}
+		
+		if (_medicNPC.amMissing)
+		{
+			_medicNPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _medicNPC.amJailed;
+		}
+		else
+		{
+			_medicNPC.gameObject.SetActive(true);
 		}
 
 

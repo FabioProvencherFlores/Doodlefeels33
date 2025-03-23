@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TeacherNPC : BeigeNPC, IDialogue
@@ -13,33 +14,43 @@ public class TeacherNPC : BeigeNPC, IDialogue
 		}
 	}
 
+
+	bool _isTrustingTowardsPlayer = false;
+	bool _playerAskedToManyQuestions = false;
+
 	public string GetNextDialogueString()
 	{
-		return "";
-	}
+		removeGoodbye = false;
+		dialogueOptions.Clear();
+		SITUATION previousSituation = currentContext;
+		currentContext = nextContext;
+		string currentline = "I SHOULD NOT SAY THIS, FAB MUST HAVE FORGOTTEN SOMETHING";
 
-	public void InitNewDialogue()
-	{
 
+
+
+		return currentline;
 	}
 
 	public void ProcessDialogueOption(int optionID)
 	{
-
+		
 	}
 
 	public SITUATION GetInitialContext()
 	{
-		return SITUATION.INVALID;
+		return SITUATION.NormalGreating;
 	}
 
 	public int GetNPCID()
 	{
-		return -1;
+		return 7;
 	}
 
-	public bool IsGoodbyeADefaultOption()
+	public void InitNewDialogue()
 	{
-		return true;
+		currentContext = GetInitialContext();
+		nextContext = currentContext;
+		myData.Reset();
 	}
 }

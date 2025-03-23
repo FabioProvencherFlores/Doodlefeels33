@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 
 
@@ -46,20 +48,26 @@ public class DialogueManager : MonoBehaviour
     private void DoNewDialogueLoop()
     {
 		textAnimator.SetAndStartAnimation(_npcController.GetNextDialogueString());
-        string[] lineoptions = _npcController.GetDialogueOptions();
+        List<string> lineoptions = _npcController.GetDialogueOptions();
         options[0].gameObject.SetActive(false);
         options[1].gameObject.SetActive(false);
         options[2].gameObject.SetActive(false);
         options[3].gameObject.SetActive(false);
 
-        if (lineoptions.Length <  4 && _npcController.IsGoodbyeADefaultOption())
+		if ((lineoptions.Count > 3 && _npcController.IsGoodbyeADefaultOption()) ||(lineoptions.Count == 4 && !_npcController.IsGoodbyeADefaultOption()))
+		{
+            Debug.LogError("too many dialogue options in the line " + _npcController.GetNextDialogueString());
+
+		}
+
+		if (lineoptions.Count <  4 && _npcController.IsGoodbyeADefaultOption())
         {
             options[3].gameObject.SetActive(true);
             options[3].TextForOption.SetText("Goodbye.");
 
         }
 
-        for (int i = 0; i < lineoptions.Length; i++)
+        for (int i = 0; i < lineoptions.Count; i++)
         {
             options[i].gameObject.SetActive(true);
             options[i].TextForOption.SetText(lineoptions[i]);

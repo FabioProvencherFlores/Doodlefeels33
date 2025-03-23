@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IDialogue
@@ -9,7 +11,7 @@ public interface IDialogue
 	}
 
     public void InitNewDialogue();
-    public string[] GetDialogueOptions();
+    public List<string> GetDialogueOptions();
 	public Material spriteMaterial { get; }
 
 	public void ProcessDialogueOption(int optionID);
@@ -38,15 +40,19 @@ public enum SITUATION
 	INVALID,
 	NormalGreating,
 	AngryGreating,
-	AskedToGoToJail,
 	PassiveChecks,
-	PlayerAskedName,
 	SmallTalk,
 	BackedDownFromJailRequest,
-	Apologize,
+	PlayerInsultedMe,
+	ParanoiaNoneAnswer,
+	PlayerApologized,
+	PlayerAskedAboutSunblind,
+	PlayerAskedName,
+	PlayerAskedToGoToJail,
 	PlayerAskedWhereAreWe,
 	PlayerAskedHowLong,
-	PlayerAskedWhatYouDoing
+	PlayerAskedWhatYouDoing,
+	PlayerASkedWhyYouHere
 }
 
 
@@ -55,8 +61,8 @@ public class BeigeNPC : MonoBehaviour
 
 	public NPCData myData = new NPCData();
 
-	protected string[] dialogueOptions = { "" };
-	public string[] GetDialogueOptions() { return dialogueOptions; }
+	protected List<string> dialogueOptions = new List<string>{ "" };
+	public List<string> GetDialogueOptions() { return dialogueOptions; }
 	public bool amMissing = false;
 	public bool amDead = false;
 
@@ -64,6 +70,13 @@ public class BeigeNPC : MonoBehaviour
 
 	protected SITUATION currentContext;
 	protected SITUATION nextContext;
+
+	protected bool removeGoodbye = false;
+	public bool IsGoodbyeADefaultOption()
+	{
+		return !removeGoodbye;
+	}
+
 
 	public virtual string GetJailLine() { return "I got nothing to say to you..."; }
 

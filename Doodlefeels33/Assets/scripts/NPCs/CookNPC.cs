@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CookNPC : BeigeNPC, IDialogue
@@ -13,8 +14,6 @@ public class CookNPC : BeigeNPC, IDialogue
 		}
 	}
 
-	bool removeGoodbye = false;
-	public bool IsGoodbyeADefaultOption() { return !removeGoodbye; }
 
 	public int GetNPCID()
 	{
@@ -38,6 +37,7 @@ public class CookNPC : BeigeNPC, IDialogue
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
+		dialogueOptions.Clear();
 		SITUATION previousSituation = currentContext;
 		currentContext = nextContext;
 		string currentline = "I SHOULD NOT SAY THIS, FAB MUST HAVE FORGOTTEN SOMETHING";
@@ -45,7 +45,7 @@ public class CookNPC : BeigeNPC, IDialogue
 		{
 			case SITUATION.NormalGreating:
 				currentline = "You hungry?";
-				dialogueOptions = new string[] { "Who are you?", "What's cooking? It smells delicious." };
+				dialogueOptions = new List<string> { "Who are you?", "What's cooking? It smells delicious." };
 				break;
 			case SITUATION.PlayerAskedName:
 				if (_alreadyaskedName)
@@ -57,27 +57,27 @@ public class CookNPC : BeigeNPC, IDialogue
 					_alreadyaskedName = true;
 					currentline = "Nowadays, I'm just the cook. That's fine by me.";
 				}
-				dialogueOptions = new string[] { "Have you been here long?", "What are you doing?." };
+				dialogueOptions = new List<string> { "Have you been here long?", "What are you doing?." };
 				break;
 			case SITUATION.BackedDownFromJailRequest:
 				currentline = "I swear, you pull some stupid joke like that on me again...";
-				dialogueOptions = new string[] { "Have you been here long?", "What are you doing?." };
+				dialogueOptions = new List<string> { "Have you been here long?", "What are you doing?." };
 				break;
 			case SITUATION.SmallTalk:
 				if (_numberOfSmalltalk == 0)
 				{
 					currentline = "Listen, you seem fine and talky... but I got to feed y'all mouths.";
-					dialogueOptions = new string[] { "You're the chef, right?", "I bet it's gonna be real good!" };
+					dialogueOptions = new List<string> { "You're the chef, right?", "I bet it's gonna be real good!" };
 				}
 				else if (_numberOfSmalltalk == 1)
 				{
 					currentline = "Sure.";
-					dialogueOptions = new string[] { "What's your name, then?", "Glad we still got some food back there!", "Where are we?" };
+					dialogueOptions = new List<string> { "What's your name, then?", "Glad we still got some food back there!", "Where are we?" };
 				}
 				else
 				{
 					currentline = "Hmph.";
-					dialogueOptions = new string[] { "I didn't get your name...", "", "Where are we?" };
+					dialogueOptions = new List<string> { "I didn't get your name...", "", "Where are we?" };
 				}
 				_numberOfSmalltalk++;
 				break;
@@ -85,25 +85,25 @@ public class CookNPC : BeigeNPC, IDialogue
 			case SITUATION.PlayerAskedWhereAreWe:
 				currentline = "You got sunblind? You should check with that sleepy doctor over there.";
 				break;
-			case SITUATION.Apologize:
+			case SITUATION.PlayerApologized:
 				currentline = "Good.";
 				break;
-			case SITUATION.AskedToGoToJail:
+			case SITUATION.PlayerAskedToGoToJail:
 				currentline = "What fuck, why?";
 				removeGoodbye = true;
-				dialogueOptions = new string[] { "I Changed my mind...", "Get in the cell." };
+				dialogueOptions = new List<string> { "I Changed my mind...", "Get in the cell." };
 				break;
 			case SITUATION.AngryGreating:
 				currentline = "You again. What do you want?";
-				dialogueOptions = new string[] { "Let's start again" };
+				dialogueOptions = new List<string> { "Let's start again" };
 				break;
 			case SITUATION.PlayerAskedHowLong:
 				currentline = "Been here a while. I think only that teacher was here before I was. Days get fuzzy, can't remember much.";
-				dialogueOptions = new string[] { "Good to know!" };
+				dialogueOptions = new List<string> { "Good to know!" };
 				break;
 			case SITUATION.PlayerAskedWhatYouDoing:
 				currentline = "I'm making diner. You blind?";
-				dialogueOptions = new string[] { "Ok, that's nice." };
+				dialogueOptions = new List<string> { "Ok, that's nice." };
 				break;
 
 		}
@@ -163,7 +163,7 @@ public class CookNPC : BeigeNPC, IDialogue
 				}
 				goto case SITUATION.PassiveChecks;
 
-			case SITUATION.AskedToGoToJail:
+			case SITUATION.PlayerAskedToGoToJail:
 				if (optionID == 0)
 				{
 					nextContext = SITUATION.BackedDownFromJailRequest;
@@ -178,7 +178,7 @@ public class CookNPC : BeigeNPC, IDialogue
 			case SITUATION.BackedDownFromJailRequest:
 				if (optionID == 0)
 				{
-					nextContext = SITUATION.Apologize;
+					nextContext = SITUATION.PlayerApologized;
 				}
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.AngryGreating:
@@ -194,7 +194,7 @@ public class CookNPC : BeigeNPC, IDialogue
 		// 4 is jail
 		if (optionID == 4)
 		{
-			nextContext = SITUATION.AskedToGoToJail;
+			nextContext = SITUATION.PlayerAskedToGoToJail;
 			myData.playerWantsToJailMe = true;
 			myData.playerHasAskedForJail = true;
 		}
@@ -205,7 +205,7 @@ public class CookNPC : BeigeNPC, IDialogue
 	{
 		if (myData.playerWantsToJailMe)
 		{
-			return SITUATION.AskedToGoToJail;
+			return SITUATION.PlayerAskedToGoToJail;
 		}
 
 		else if (myData.shouldGreatPlayer)
@@ -220,7 +220,7 @@ public class CookNPC : BeigeNPC, IDialogue
 			}
 		}
 
-		return SITUATION.INVALID;
+		return SITUATION.NormalGreating;
 	}
 
 	public void InitNewDialogue()
