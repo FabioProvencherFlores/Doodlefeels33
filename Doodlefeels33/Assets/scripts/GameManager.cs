@@ -187,11 +187,11 @@ public class GameManager : MonoBehaviour
 
 	public IEnumerator GoToWinScreen()
 	{
+		SceneManager.LoadScene("WinScene");
 		yield return new WaitForSeconds(1);
 		
 		// change scene here
 		Debug.Log(":)");
-		SceneManager.LoadScene("WinScene");
 	}
 
 	public void GoToSleep()
@@ -209,7 +209,7 @@ public class GameManager : MonoBehaviour
 		if (daysSinceStart > 1 && daysSinceStart %2 == 0 && !_kid2NPC.amDead)
 		{
 			Debug.Log("killing starts!");
-			daysWithoutInsident = 0;
+
 
 			BeigeNPC victim = ChooseNextDeath(_kid2NPC.amJailed);
 			if (victim != null)
@@ -234,6 +234,7 @@ public class GameManager : MonoBehaviour
 					if (_teachNPC.amJailed) _didSomeoneDiedInJail = true;
 
 					noOneDied = false;
+					_cookNPC.killedTeacher = true;
 				}
 			}
 		}

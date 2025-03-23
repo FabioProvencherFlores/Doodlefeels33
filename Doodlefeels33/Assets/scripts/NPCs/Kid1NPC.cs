@@ -14,6 +14,7 @@ public class Kid1NPC : BeigeNPC, IDialogue
 		}
 	}
 
+
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;

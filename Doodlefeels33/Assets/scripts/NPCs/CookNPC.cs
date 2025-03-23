@@ -36,6 +36,7 @@ public class CookNPC : BeigeNPC, IDialogue
 	bool _alreadyaskedName = false;
 
 	int _numberOfWarnings = 0;
+	public bool killedTeacher = false;
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
@@ -108,14 +109,21 @@ public class CookNPC : BeigeNPC, IDialogue
 				dialogueOptions = new List<string> { "Ok, that's nice." };
 				break;
 			case SITUATION.NPCWarning:
-				if (_numberOfWarnings == 0)
-					currentline = "That lady is hysterical. You probably should do something about her, before I do.";
-				else if (_numberOfWarnings == 1)
-					currentline = "She's still screaming. Someone needs to shut her up.";
-				else if (_numberOfWarnings == 2)
-					currentline = "If you don't, I'll do it.";
+				if (!killedTeacher)
+				{
+					if (_numberOfWarnings == 0)
+						currentline = "That lady is hysterical. You probably should do something about her, before I do.";
+					else if (_numberOfWarnings == 1)
+						currentline = "She's still screaming. Someone needs to shut her up.";
+					else if (_numberOfWarnings == 2)
+						currentline = "If you don't, I'll do it.";
 				
-				dialogueOptions.Add("I'm on it.");
+					dialogueOptions.Add("I'm on it.");
+				}
+				else
+				{
+					currentline = "I told you I'd do it, didn't I? Don't push me...";
+				}
 				break;
 
 		}
@@ -198,8 +206,11 @@ public class CookNPC : BeigeNPC, IDialogue
 				nextContext = SITUATION.SmallTalk;
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.NPCWarning:
-				_numberOfWarnings++;
-				if (optionID == 0) nextContext = SITUATION.SmallTalk;
+				if (killedTeacher)
+				{
+					_numberOfWarnings++;
+					if (optionID == 0) nextContext = SITUATION.SmallTalk;
+				}
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.PassiveChecks:
 			default:
@@ -222,7 +233,7 @@ public class CookNPC : BeigeNPC, IDialogue
 
 	public SITUATION GetInitialContext()
 	{
-		if (GameManager.Instance.isTeacherFreakingOut)
+		if (GameManager.Instance.isTeacherFreakingOut || killedTeacher)
 		{
 			return SITUATION.NPCWarning;
 		}
