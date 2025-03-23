@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -181,10 +182,12 @@ public class GameManager : MonoBehaviour
 
 		// change scene here
 		Debug.Log(":(");
+		SceneManager.LoadScene("GameoverScene");
 	}
 
 	public IEnumerator GoToWinScreen()
 	{
+		SceneManager.LoadScene("WinScene");
 		yield return new WaitForSeconds(1);
 		
 		// change scene here
@@ -206,7 +209,7 @@ public class GameManager : MonoBehaviour
 		if (daysSinceStart > 1 && daysSinceStart %2 == 0 && !_kid2NPC.amDead)
 		{
 			Debug.Log("killing starts!");
-			daysWithoutInsident = 0;
+
 
 			BeigeNPC victim = ChooseNextDeath(_kid2NPC.amJailed);
 			if (victim != null)
@@ -222,7 +225,7 @@ public class GameManager : MonoBehaviour
 
 		if (noOneDied)
 		{
-			if (nbDayHisteriaTeacher > 2)
+			if (nbDayHisteriaTeacher > 1)
 			{
 				if (!_cookNPC.amDead && !_teachNPC.amDead && _cookNPC.amJailed == _teachNPC.amJailed)
 				{
@@ -231,6 +234,7 @@ public class GameManager : MonoBehaviour
 					if (_teachNPC.amJailed) _didSomeoneDiedInJail = true;
 
 					noOneDied = false;
+					_cookNPC.killedTeacher = true;
 				}
 			}
 		}
