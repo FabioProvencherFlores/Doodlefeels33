@@ -95,7 +95,7 @@ public class MedicNPC : BeigeNPC, IDialogue
 					}
 					dialogueOptions = new List<string> { "I am sorry for earlier. Please help me.", "I need to know." };
 				}
-				removeGoodbye = true;
+
 				break;
 
 		}

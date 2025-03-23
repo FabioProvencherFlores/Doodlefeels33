@@ -130,6 +130,8 @@ public class GameManager : MonoBehaviour
 		remainingInteractions = nbOfInteractionsPerDay;
 		_medicNPC._willrefusetotalkuntiltomorrow = false;
 		daysSinceStart++;
+
+		GoToGym();
 	}
 
 	public void GoToSleep()
@@ -152,6 +154,7 @@ public class GameManager : MonoBehaviour
 			{
 				noOneDied = false;
 				victim.amDead = true;
+				victim.amMissing = true;
 				if (victim.amJailed) _didSomeoneDiedInJail = true;
 			}
 		}
@@ -175,8 +178,8 @@ public class GameManager : MonoBehaviour
 		if (_medicNPC.amJailed == inJail) return _medicNPC;
 		if (_fortuneTellerNPC.amJailed == inJail) return _fortuneTellerNPC;
 		if (_itNPC.amJailed == inJail) return _itNPC;
-		if (_teachNPC.amJailed == inJail) return _teachNPC;
 		if (_cookNPC.amJailed == inJail) return _cookNPC;
+		if (_teachNPC.amJailed == inJail) return _teachNPC;
 
 		return null;
 	}
@@ -193,7 +196,6 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
 		StartNewDay();
-		GoToGym();
 	}
 	public void PutCurrentNPCInJail()
 	{
@@ -363,7 +365,7 @@ public class GameManager : MonoBehaviour
 	{
 		foreach (BeigeNPC prisoner in jailedNPCs)
 		{
-			prisoner.amMissing = false;
+			if (!prisoner.amDead) prisoner.amMissing = false;
 			prisoner.amJailed = false;
 		}
 		jailedNPCs.Clear();
