@@ -125,6 +125,9 @@ public class GameManager : MonoBehaviour
 
 	public bool IsMorning() { return remainingInteractions > 0; }
 	public bool IsEvening() { return remainingInteractions == 0; }
+
+	public bool kid1WillKillMe = false;
+
 	void StartNewDay()
 	{
 		// fade in
@@ -147,25 +150,38 @@ public class GameManager : MonoBehaviour
 
 		if (everyoneDied)
 		{
-			GotToFailureScreen();
+			StartCoroutine(GotToFailureScreen());
+			return;
 		}
 
 		if (daysWithoutInsident >= 3)
 		{
-			GoToWinScreen();
+			StartCoroutine(GoToWinScreen());
+			return;
+		}
+
+		if (kid1WillKillMe && !_kid1NPC.amDead && !_kid1NPC.amJailed)
+		{
+			_currentNPC = _kid1NPC;
+			GoToDialogue();
+			return;
 		}
 
 		GoToGym();
 	}
 
-	void GotToFailureScreen()
+	public IEnumerator GotToFailureScreen()
 	{
+		yield return new WaitForSeconds(1);
 
+		// change scene here
 	}
 
-	void GoToWinScreen()
+	public IEnumerator GoToWinScreen()
 	{
-
+		yield return new WaitForSeconds(1);
+		
+		// change scene here
 	}
 
 	public void GoToSleep()

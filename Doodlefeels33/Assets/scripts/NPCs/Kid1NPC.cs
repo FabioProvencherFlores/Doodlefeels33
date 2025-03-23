@@ -16,31 +16,106 @@ public class Kid1NPC : BeigeNPC, IDialogue
 
 	public string GetNextDialogueString()
 	{
-		return "";
+		removeGoodbye = false;
+		dialogueOptions.Clear();
+		SITUATION previousSituation = currentContext;
+		currentContext = nextContext;
+		string currentline = "I SHOULD NOT SAY THIS, FAB MUST HAVE FORGOTTEN SOMETHING";
+
+		
+
+		switch (currentContext)
+		{
+			case SITUATION.NPCAggroPlayer:
+				removeGoodbye = true;
+				currentline = "I told you I would...";
+				dialogueOptions.Add("Stop this nonesense!");
+				dialogueOptions.Add("I won't hesitate to hurt a child.");
+				dialogueOptions.Add("Calm down...");
+				dialogueOptions.Add("You're crazy.");
+				break;
+			case SITUATION.NormalGreating:
+				currentline = "I want to go outside!";
+				break;
+			case SITUATION.PlayerAskedToGoToJail:
+				removeGoodbye = true;
+				currentline = "I'll kill you.";
+				dialogueOptions.Add("Calm down. I was kidding!");
+				dialogueOptions.Add("Get into the room. Now!");
+				break;
+			case SITUATION.BackedDownFromJailRequest:
+				currentline = "...";
+				break;
+		}
+
+
+		return currentline;
 	}
 
-	public void InitNewDialogue()
-	{
-
-	}
 
 	public void ProcessDialogueOption(int optionID)
 	{
+		switch (currentContext)
+		{
+			case SITUATION.NPCAggroPlayer:
+				if (optionID == 1)
+				{
+					amDead = true;
+					amMissing = true;
+					GameManager.Instance.GoToGym();
+				}
+				else if (optionID != 4)
+				{
+					StartCoroutine(GameManager.Instance.GotToFailureScreen());
+					return;
+				}
+				break;
+			case SITUATION.PlayerAskedToGoToJail:
+				myData.playerHasAskedForJail = true;
+				GameManager.Instance.kid1WillKillMe = true;
+				if (optionID == 0) nextContext = SITUATION.BackedDownFromJailRequest;
+				if (optionID == 1)
+				{
+					GameManager.Instance.PutCurrentNPCInJail();
+					GameManager.Instance.GoToGym();
+					return;
+				}
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.NormalGreating:
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.BackedDownFromJailRequest:
+			case SITUATION.PassiveChecks:
+			default:
+				if (optionID == 3)
+				{
+					GameManager.Instance.GoToGym();
+				}
+				break;
+		}
 
+		// 4 is jail
+		if (optionID == 4)
+		{
+			nextContext = SITUATION.PlayerAskedToGoToJail;
+			myData.playerWantsToJailMe = true;
+		}
 	}
 
 	public SITUATION GetInitialContext()
 	{
-		return SITUATION.INVALID;
+		if (GameManager.Instance.kid1WillKillMe) return SITUATION.NPCAggroPlayer;
+		return SITUATION.NormalGreating;
 	}
 
 	public int GetNPCID()
 	{
-		return -1;
+		return 4;
 	}
 
-	public bool IsGoodbyeADefaultOption()
+	public void InitNewDialogue()
 	{
-		return true;
+		currentContext = GetInitialContext();
+		nextContext = currentContext;
+		myData.Reset();
 	}
 }
