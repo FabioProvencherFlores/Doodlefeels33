@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
 	GameObject goToBedButton;
 	[SerializeField]
 	GameObject blackSquareForNight;
-	int daysSinceStart = 0;
 
 	[Header("Scene management")]
 	[SerializeField]
@@ -56,12 +55,21 @@ public class GameManager : MonoBehaviour
 	[Header("All NPCs")]
 	[SerializeField] CookNPC _cookNPC;
 	[SerializeField] MedicNPC _medicNPC;
-	[SerializeField] TeacherNPC _teachNPC;
+	[SerializeField] AntiquarianNPC _antiquarianNPC;
+	[SerializeField] itNPC _itNPC;
+	[SerializeField] Kid1NPC _kid1NPC;
 	[SerializeField] Kid2NPC _kid2NPC;
+	[SerializeField] VeteranNPC _veteranNPC;
+	[SerializeField] TeacherNPC _teachNPC;
+	[SerializeField] FortuneTellerNPC _fortuneTellerNPC;
+	[SerializeField] ContructionNPC _contructionNPC;
 
 	[Header("The killing")]
 	[SerializeField]
 	GameObject bloodSplatter;
+	bool _didSomeoneDiedInJail = false;
+	int daysSinceStart = 0;
+	int daysWithoutInsident = 0;
 
 	public bool AreInteractionsRemaining()
 	{
@@ -95,14 +103,20 @@ public class GameManager : MonoBehaviour
 		{
 			return _medicNPC;
 		}
+		if (id == 2) return _antiquarianNPC;
+		if (id == 3) return _itNPC;
+		if (id == 4) return _kid1NPC;
 		if (id == 5)
 		{
 			return _kid2NPC;
 		}
+		if (id == 6) return _veteranNPC;
 		if (id == 7)
 		{
 			return _teachNPC;
 		}
+		if (id == 8) return _fortuneTellerNPC;
+		if (id == 9) return _contructionNPC;
 
 		Debug.LogError("You forgot the NPC ID", this);
 
@@ -127,8 +141,46 @@ public class GameManager : MonoBehaviour
 
 	void ProcessNight()
 	{
+		bool noOneDied = true;
+		if (daysSinceStart > 1 && daysSinceStart %2 == 0)
+		{
+			Debug.Log("killing starts!");
+			daysWithoutInsident = 0;
 
+			BeigeNPC victim = ChooseNextDeath(_kid2NPC.amJailed);
+			if (victim != null)
+			{
+				noOneDied = false;
+				victim.amDead = true;
+				if (victim.amJailed) _didSomeoneDiedInJail = true;
+			}
+		}
+
+		if (noOneDied)
+		{
+			daysWithoutInsident++;
+		}
+		else
+		{
+			daysWithoutInsident = 0;
+		}
 	}
+
+	BeigeNPC ChooseNextDeath(bool inJail)
+	{
+		if (_contructionNPC.amJailed == inJail) return _contructionNPC;
+		if (_antiquarianNPC.amJailed == inJail) return _antiquarianNPC;
+		if (_veteranNPC.amJailed == inJail) return _veteranNPC;
+		if (_kid1NPC.amJailed == inJail) return _kid2NPC;
+		if (_medicNPC.amJailed == inJail) return _medicNPC;
+		if (_fortuneTellerNPC.amJailed == inJail) return _fortuneTellerNPC;
+		if (_itNPC.amJailed == inJail) return _itNPC;
+		if (_teachNPC.amJailed == inJail) return _teachNPC;
+		if (_cookNPC.amJailed == inJail) return _cookNPC;
+
+		return null;
+	}
+
 
 	IEnumerator WaitNightThenStartNewDay()
 	{
@@ -166,16 +218,6 @@ public class GameManager : MonoBehaviour
 			_cookNPC.gameObject.SetActive(true);
 		}
 		
-		if (_teachNPC.amMissing)
-		{
-			_teachNPC.gameObject.SetActive(false);
-			_hasJailedNPC |= _teachNPC.amJailed;
-		}
-		else
-		{
-			_teachNPC.gameObject.SetActive(true);
-		}
-		
 		if (_medicNPC.amMissing)
 		{
 			_medicNPC.gameObject.SetActive(false);
@@ -185,7 +227,47 @@ public class GameManager : MonoBehaviour
 		{
 			_medicNPC.gameObject.SetActive(true);
 		}
-		
+
+		if (_antiquarianNPC.amMissing)
+		{
+			_antiquarianNPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _antiquarianNPC.amJailed;
+		}
+		else
+		{
+			_antiquarianNPC.gameObject.SetActive(true);
+		}
+
+		if (_teachNPC.amMissing)
+		{
+			_teachNPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _teachNPC.amJailed;
+		}
+		else
+		{
+			_teachNPC.gameObject.SetActive(true);
+		}
+
+		if (_itNPC.amMissing)
+		{
+			_itNPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _itNPC.amJailed;
+		}
+		else
+		{
+			_itNPC.gameObject.SetActive(true);
+		}
+
+		if (_kid1NPC.amMissing)
+		{
+			_kid1NPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _kid1NPC.amJailed;
+		}
+		else
+		{
+			_kid1NPC.gameObject.SetActive(true);
+		}
+
 		if (_kid2NPC.amMissing)
 		{
 			_kid2NPC.gameObject.SetActive(false);
@@ -196,6 +278,34 @@ public class GameManager : MonoBehaviour
 			_kid2NPC.gameObject.SetActive(true);
 		}
 
+		if (_veteranNPC.amMissing)
+		{
+			_veteranNPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _veteranNPC.amJailed;
+		}
+		else
+		{
+			_veteranNPC.gameObject.SetActive(true);
+		}
+
+		if (_fortuneTellerNPC.amMissing)
+		{
+			_fortuneTellerNPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _fortuneTellerNPC.amJailed;
+		}
+		else
+		{
+			_fortuneTellerNPC.gameObject.SetActive(true);
+		}
+		if (_contructionNPC.amMissing)
+		{
+			_contructionNPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _contructionNPC.amJailed;
+		}
+		else
+		{
+			_contructionNPC.gameObject.SetActive(true);
+		}
 
 		if (_hasJailedNPC)
 		{
@@ -210,6 +320,11 @@ public class GameManager : MonoBehaviour
 		if (remainingInteractions <= 0)
 		{
 			goToBedButton.SetActive(true);
+		}
+
+		if (_didSomeoneDiedInJail)
+		{
+			bloodSplatter.SetActive(true);
 		}
 
 	}
