@@ -54,7 +54,8 @@ public enum SITUATION
 	PlayerAskedWhatYouDoing,
 	PlayerASkedWhyYouHere,
 	PlayerAskedToPlay,
-	PlayerAskedAboutKid2
+	PlayerAskedAboutKid2,
+	NPCWarning
 }
 
 

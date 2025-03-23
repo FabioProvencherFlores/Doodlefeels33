@@ -129,6 +129,7 @@ public class GameManager : MonoBehaviour
 		blackSquareForNight.SetActive(false);
 		remainingInteractions = nbOfInteractionsPerDay;
 		_medicNPC._willrefusetotalkuntiltomorrow = false;
+		kid2WasJailedToday = _kid2NPC.amJailed;
 		daysSinceStart++;
 
 		GoToGym();
@@ -140,6 +141,8 @@ public class GameManager : MonoBehaviour
 		blackSquareForNight.SetActive(true);
 		StartCoroutine(WaitNightThenStartNewDay());
 	}
+
+	int nbDayHisteriaTeacher = 0;
 
 	void ProcessNight()
 	{
@@ -156,6 +159,23 @@ public class GameManager : MonoBehaviour
 				victim.amDead = true;
 				victim.amMissing = true;
 				if (victim.amJailed) _didSomeoneDiedInJail = true;
+			}
+		}
+
+		if (isTeacherFreakingOut) nbDayHisteriaTeacher++;
+
+		if (noOneDied)
+		{
+			if (nbDayHisteriaTeacher > 2)
+			{
+				if (!_cookNPC.amDead && !_teachNPC.amDead && _cookNPC.amJailed == _teachNPC.amJailed)
+				{
+					_teachNPC.amDead = true;
+					_teachNPC.amMissing = true;
+					if (_teachNPC.amJailed) _didSomeoneDiedInJail = true;
+
+					noOneDied = false;
+				}
 			}
 		}
 
@@ -205,6 +225,8 @@ public class GameManager : MonoBehaviour
 		npc.amJailed = true;
 	}
 
+	public bool kid2WasJailedToday = false;
+	public bool isTeacherFreakingOut = false;
 
 	public void RefreshNPCPresence()
 	{
@@ -363,12 +385,19 @@ public class GameManager : MonoBehaviour
 
 	public void FreePrisonner()
 	{
+		bool kid2WasJailed = _kid2NPC.amJailed;
 		foreach (BeigeNPC prisoner in jailedNPCs)
 		{
 			if (!prisoner.amDead) prisoner.amMissing = false;
 			prisoner.amJailed = false;
 		}
 		jailedNPCs.Clear();
+
+		if (kid2WasJailed && !_kid2NPC.amJailed)
+		{
+			isTeacherFreakingOut = false;
+			nbDayHisteriaTeacher = 0;
+		}
 		GoToGym();
 	}
 

@@ -34,6 +34,8 @@ public class CookNPC : BeigeNPC, IDialogue
 	}
 	int _numberOfSmalltalk = 0;
 	bool _alreadyaskedName = false;
+
+	int _numberOfWarnings = 0;
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
@@ -104,6 +106,16 @@ public class CookNPC : BeigeNPC, IDialogue
 			case SITUATION.PlayerAskedWhatYouDoing:
 				currentline = "I'm making diner. You blind?";
 				dialogueOptions = new List<string> { "Ok, that's nice." };
+				break;
+			case SITUATION.NPCWarning:
+				if (_numberOfWarnings == 0)
+					currentline = "That lady is hysterical. You probably should do something about her, before I do.";
+				else if (_numberOfWarnings == 1)
+					currentline = "She's still screaming. Someone needs to shut her up.";
+				else if (_numberOfWarnings == 2)
+					currentline = "If you don't, I'll do it.";
+				
+				dialogueOptions.Add("I'm on it.");
 				break;
 
 		}
@@ -185,6 +197,10 @@ public class CookNPC : BeigeNPC, IDialogue
 				_numberOfSmalltalk = 3;
 				nextContext = SITUATION.SmallTalk;
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.NPCWarning:
+				_numberOfWarnings++;
+				if (optionID == 0) nextContext = SITUATION.SmallTalk;
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.PassiveChecks:
 			default:
 				if (optionID == 3)
@@ -206,6 +222,10 @@ public class CookNPC : BeigeNPC, IDialogue
 
 	public SITUATION GetInitialContext()
 	{
+		if (GameManager.Instance.isTeacherFreakingOut)
+		{
+			return SITUATION.NPCWarning;
+		}
 		if (myData.shouldGreatPlayer)
 		{
 			if (myData.playerHasAskedForJail)

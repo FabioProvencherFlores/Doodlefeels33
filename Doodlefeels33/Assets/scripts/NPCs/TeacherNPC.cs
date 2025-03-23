@@ -26,6 +26,13 @@ public class TeacherNPC : BeigeNPC, IDialogue
 		currentContext = nextContext;
 		string currentline = "I SHOULD NOT SAY THIS, FAB MUST HAVE FORGOTTEN SOMETHING";
 
+		if (GameManager.Instance.kid2WasJailedToday)
+		{
+			_isFriendlyTowardsPlayer = false;
+			GameManager.Instance.isTeacherFreakingOut = true;
+			return "You emprisoned my baby you fucking psychopath! Get my child out of here right fucking now you fucking asshole! NOW!";
+		}
+
 		switch (currentContext)
 		{
 			case SITUATION.NormalGreating:

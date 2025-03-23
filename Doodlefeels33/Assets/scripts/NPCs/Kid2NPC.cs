@@ -94,6 +94,7 @@ public class Kid2NPC : BeigeNPC, IDialogue
 				if (optionID == 1)
 				{
 					GameManager.Instance.PutCurrentNPCInJail();
+					GameManager.Instance.kid2WasJailedToday = true;
 					GameManager.Instance.GoToGym();
 					return;
 				}
