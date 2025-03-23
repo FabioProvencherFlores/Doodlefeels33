@@ -16,31 +16,80 @@ public class VeteranNPC : BeigeNPC, IDialogue
 
 	public string GetNextDialogueString()
 	{
-		return "";
-	}
+		removeGoodbye = false;
+		dialogueOptions.Clear();
+		SITUATION previousSituation = currentContext;
+		currentContext = nextContext;
+		string currentline = "I SHOULD NOT SAY THIS, FAB MUST HAVE FORGOTTEN SOMETHING";
 
-	public void InitNewDialogue()
-	{
 
+		switch (currentContext)
+		{
+			case SITUATION.NormalGreating:
+				currentline = "Yes captain?";
+				break;
+			case SITUATION.PlayerAskedToGoToJail:
+				removeGoodbye = true;
+				currentline = "If you say so. I will await for further instructions.";
+				dialogueOptions.Add("On second thought, stand guard with us.");
+				dialogueOptions.Add("Thanks for your cooperation.");
+				break;
+			case SITUATION.BackedDownFromJailRequest:
+				currentline = "As you say.";
+				break;
+		}
+
+
+		return currentline;
 	}
 
 	public void ProcessDialogueOption(int optionID)
 	{
+		switch (currentContext)
+		{
+			case SITUATION.PlayerAskedToGoToJail:
+				myData.playerHasAskedForJail = true;
+				if (optionID == 0) nextContext = SITUATION.BackedDownFromJailRequest;
+				if (optionID == 1)
+				{
+					GameManager.Instance.PutCurrentNPCInJail();
+					GameManager.Instance.GoToGym();
+					return;
+				}
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.NormalGreating:
+			case SITUATION.BackedDownFromJailRequest:
+			case SITUATION.PassiveChecks:
+			default:
+				if (optionID == 3)
+				{
+					GameManager.Instance.GoToGym();
+				}
+				break;
+		}
 
+		// 4 is jail
+		if (optionID == 4)
+		{
+			nextContext = SITUATION.PlayerAskedToGoToJail;
+			myData.playerWantsToJailMe = true;
+		}
 	}
 
 	public SITUATION GetInitialContext()
 	{
-		return SITUATION.INVALID;
+		return SITUATION.NormalGreating;
 	}
+
 
 	public int GetNPCID()
 	{
-		return -1;
+		return 6;
 	}
-
-	public bool IsGoodbyeADefaultOption()
+	public void InitNewDialogue()
 	{
-		return true;
+		currentContext = GetInitialContext();
+		nextContext = currentContext;
+		myData.Reset();
 	}
 }
