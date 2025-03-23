@@ -16,13 +16,9 @@ public class ElderNPC : BeigeNPC, IDialogue
 
 	public string GetNextDialogueString()
 	{
-		return "";
+		return "I shouldn't exist, anymore";
 	}
 
-	public void InitNewDialogue()
-	{
-
-	}
 
 	public void ProcessDialogueOption(int optionID)
 	{
@@ -39,8 +35,11 @@ public class ElderNPC : BeigeNPC, IDialogue
 		return -1;
 	}
 
-	public bool IsGoodbyeADefaultOption()
+	public void InitNewDialogue()
 	{
-		return true;
+		currentContext = GetInitialContext();
+		nextContext = currentContext;
+		myData.Reset();
 	}
+
 }
