@@ -123,6 +123,8 @@ public class GameManager : MonoBehaviour
 		return null;
 	}
 
+	public bool IsMorning() { return remainingInteractions > 0; }
+	public bool IsEvening() { return remainingInteractions == 0; }
 	void StartNewDay()
 	{
 		// fade in

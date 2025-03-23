@@ -37,7 +37,6 @@ public class DialogueManager : MonoBehaviour
     {
 		_npcController = npcController;
 		npcRenderer.material = _npcController.spriteMaterial;
-		textAnimator.SetAndStartAnimation(npcController.GetNextDialogueString());
         DoNewDialogueLoop();
 	}
 
