@@ -893,7 +893,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.49807122, y: 0.4980711, z: -0.5019215, w: 0.5019215}
   m_LocalPosition: {x: -16.96, y: -10.83, z: 19.57}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0658, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 555587441}
@@ -985,8 +985,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10.000002, y: 0.0000023749, z: 10.000002}
-  m_Center: {x: 0, y: -0.0000019073486, z: 0}
+  m_Size: {x: 10.000002, y: 1.9680378, z: 10.026872}
+  m_Center: {x: -8.138426e-12, y: -0.18142462, z: -0.013430596}
 --- !u!1 &221485249
 GameObject:
   m_ObjectHideFlags: 0
@@ -2559,6 +2559,8 @@ MonoBehaviour:
   _fortuneTellerNPC: {fileID: 470158611}
   _contructionNPC: {fileID: 1852048007}
   bloodSplatter: {fileID: 701454842}
+  kid2WasJailedToday: 0
+  isTeacherFreakingOut: 0
   teacherKnowsPlayer: 0
 --- !u!4 &535586843
 Transform:

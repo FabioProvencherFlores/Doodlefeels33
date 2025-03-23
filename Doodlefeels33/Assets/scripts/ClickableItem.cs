@@ -96,7 +96,8 @@ public class ClickableItem : MonoBehaviour
 	private void ChangeToHovered()
 	{
 		sfx_hover.Play();
-		_spriteTransform.localScale = startingScale * 1.1f;
+		if (_npcController == null) _spriteTransform.localScale = startingScale * 1.05f;
+		else _spriteTransform.localScale = startingScale * 1.1f;
 		_isShowingHover = true;
 	}
 

@@ -26,7 +26,7 @@ public class TeacherNPC : BeigeNPC, IDialogue
 		currentContext = nextContext;
 		string currentline = "I SHOULD NOT SAY THIS, FAB MUST HAVE FORGOTTEN SOMETHING";
 
-		if (GameManager.Instance.kid2WasJailedToday)
+		if (GameManager.Instance.kid2WasJailedToday && !myData.playerWantsToJailMe)
 		{
 			_isFriendlyTowardsPlayer = false;
 			GameManager.Instance.isTeacherFreakingOut = true;
