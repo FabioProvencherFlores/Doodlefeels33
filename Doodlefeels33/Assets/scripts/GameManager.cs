@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
 	void ProcessNight()
 	{
 		bool noOneDied = true;
-		if (daysSinceStart > 1 && daysSinceStart %2 == 0)
+		if (daysSinceStart > 1 && daysSinceStart %2 == 0 && !_kid2NPC.amDead)
 		{
 			Debug.Log("killing starts!");
 			daysWithoutInsident = 0;
@@ -250,7 +250,7 @@ public class GameManager : MonoBehaviour
 		if (!_contructionNPC.amDead && _contructionNPC.amJailed == inJail) return _contructionNPC;
 		if (!_antiquarianNPC.amDead && _antiquarianNPC.amJailed == inJail) return _antiquarianNPC;
 		if (!_veteranNPC.amDead && _veteranNPC.amJailed == inJail) return _veteranNPC;
-		if (!_kid1NPC.amDead && _kid1NPC.amJailed == inJail) return _kid2NPC;
+		if (!_kid1NPC.amDead && _kid1NPC.amJailed == inJail) return _kid1NPC;
 		if (!_medicNPC.amDead && _medicNPC.amJailed == inJail) return _medicNPC;
 		if (!_fortuneTellerNPC.amDead && _fortuneTellerNPC.amJailed == inJail) return _fortuneTellerNPC;
 		if (!_itNPC.amDead && _itNPC.amJailed == inJail) return _itNPC;
