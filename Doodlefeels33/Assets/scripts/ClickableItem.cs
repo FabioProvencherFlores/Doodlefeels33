@@ -18,6 +18,7 @@ public class ClickableItem : MonoBehaviour
 	private Vector3 startingScale;
 
 	private AudioSource sfx_click;
+	private AudioSource sfx_jail_click;
 	
 
 
@@ -30,6 +31,7 @@ public class ClickableItem : MonoBehaviour
 	private void Start()
 	{
 		sfx_click = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
+		sfx_jail_click = GameObject.FindGameObjectWithTag("chain_sfx").GetComponent<AudioSource>();
 		_npcController = GetComponent<IDialogue>();
 		_spriteTransform = gameObject.transform;
 	}
@@ -64,10 +66,18 @@ public class ClickableItem : MonoBehaviour
 
 	public void OnClick()
 	{
-		sfx_click.Play();
+		
 		if (_npcController != null)
 		{
+			sfx_click.Play();
 			GameManager.Instance.SetNewNPC(_npcController);
+		}
+		else
+		{
+			if(GameManager.Instance.jailedNPCs.Count > 0)
+			{
+				sfx_jail_click.Play();
+			}
 		}
 	}
 

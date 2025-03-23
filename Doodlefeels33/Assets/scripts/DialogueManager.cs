@@ -18,6 +18,9 @@ public class DialogueManager : MonoBehaviour
 
     public bool jailIsAvailable = true;
 
+    [SerializeField]
+    AudioSource chain_click_sfx;
+
 
     public void ChooseDialogueOption(int anOptionID)
     {
@@ -41,6 +44,7 @@ public class DialogueManager : MonoBehaviour
     public void ClickedJail()
     {
         _npcController.ProcessDialogueOption(4);
+        chain_click_sfx.Play();
         DoNewDialogueLoop();
 
 	}

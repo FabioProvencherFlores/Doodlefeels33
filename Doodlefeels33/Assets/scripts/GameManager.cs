@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 	Material debugNotEmpty;
 	[SerializeField]
 	TextAnimator jailDialogue;
-	List<BeigeNPC> jailedNPCs = new List<BeigeNPC>();
+	public List<BeigeNPC> jailedNPCs = new List<BeigeNPC>();
 
 	[Header("Day night cycle")]
 	[SerializeField]
