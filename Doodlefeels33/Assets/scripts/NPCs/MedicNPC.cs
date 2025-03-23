@@ -36,13 +36,21 @@ public class MedicNPC : BeigeNPC, IDialogue
 		switch (currentContext)
 		{
 			case SITUATION.NormalGreating:
-				if (_isTrustingTowardsPlayer)
+				if (amReadyToLeave)
 				{
-					currentline = "What do you want?";
+					currentline = "I'm packing my stuff. Samples are all packed. We will gatter more samples. Always more!";
 				}
 				else
 				{
-					currentline = "Hello my dear...";
+					if (!_isTrustingTowardsPlayer)
+					{
+						currentline = "What do you want?";
+					}
+					else
+					{
+						currentline = "Hello my dear...";
+					}
+
 				}
 				dialogueOptions = new List<string> { "Who are you?", "Why are you standing up there?" };
 				break;
@@ -77,6 +85,12 @@ public class MedicNPC : BeigeNPC, IDialogue
 				currentline = "What? No, please don't lock me in there!";
 				removeGoodbye = true;
 				dialogueOptions = new List<string> { "Okay, I won't.", "Please, don't make this difficult." };
+				break;
+			case SITUATION.EscapeQuest:
+				removeGoodbye = true;
+				currentline = "Going outside? Out there?! No way";
+				dialogueOptions.Add("You're right, we should stay.");
+				dialogueOptions.Add("It's our only way, we are going to die here...");
 				break;
 			case SITUATION.PlayerAskedAboutSunblind:
 				if (_isTrustingTowardsPlayer)
@@ -125,6 +139,15 @@ public class MedicNPC : BeigeNPC, IDialogue
 				{
 					nextContext = SITUATION.PlayerASkedWhyYouHere;
 				}
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.EscapeQuest:
+				_isTrustingTowardsPlayer = true;
+				_playerAskedToLeave = true;
+				if (optionID == 1)
+				{
+					amReadyToLeave = true;
+				}
+				nextContext = SITUATION.NormalGreating;
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.PlayerAskedName:
 				if (optionID == 0)
@@ -232,9 +255,11 @@ public class MedicNPC : BeigeNPC, IDialogue
 			myData.playerHasAskedForJail = true;
 		}
 	}
-
+	bool _playerAskedToLeave = false;
 	public SITUATION GetInitialContext()
 	{
+		if (GameManager.Instance.npcsPrepareToLeave && !_playerAskedToLeave)
+			return SITUATION.EscapeQuest;
 		return SITUATION.NormalGreating;
 	}
 

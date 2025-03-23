@@ -81,6 +81,20 @@ public class TeacherNPC : BeigeNPC, IDialogue
 				dialogueOptions.Add("How old is your kid?");
 				dialogueOptions.Add("Is something wrong?");
 				break;
+			case SITUATION.EscapeQuest:
+				if (_playerAskedToLeave)
+				{
+					currentline = "I'm packing. Can't wait to be out of this hell hole!";
+				}
+				else
+				{
+					removeGoodbye = true;
+					currentline = "I heard about the escape plan. I'm not risking my baby out there for some idiot's dellusion";
+					dialogueOptions.Add("You are right. We should stay here");
+					GameManager.Instance.teacherKnowsPlayer = true;
+					if (GameManager.Instance.playerKnowsKid2Name) dialogueOptions.Add("You should go, both of you. Think of Thimoty...");
+				}
+				break;
 			case SITUATION.BackedDownFromJailRequest:
 				currentline = "No matter what the others say, you are not welcomed here anymore.";
 				break;
@@ -106,9 +120,16 @@ public class TeacherNPC : BeigeNPC, IDialogue
 
 		return currentline;
 	}
-
+	bool _playerAskedToLeave = false;
 	public void ProcessDialogueOption(int optionID)
 	{
+		if (GameManager.Instance.kid2WasJailedToday && !myData.playerWantsToJailMe)
+		{
+			if (optionID != 4)
+			{
+				GameManager.Instance.GoToGym();
+			}
+		}
 		switch (currentContext)
 		{
 			case SITUATION.PlayerAskedToGoToJail:
@@ -144,6 +165,15 @@ public class TeacherNPC : BeigeNPC, IDialogue
 				if (optionID == 0) nextContext = SITUATION.PlayerAskedAboutKid2;
 				if (optionID == 1) nextContext = SITUATION.PlayerAskedAboutSunblind;
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.EscapeQuest:
+				_playerAskedToLeave = true;
+				if (optionID == 0) nextContext = SITUATION.SmallTalk;
+				if (optionID == 1)
+				{
+					nextContext = SITUATION.EscapeQuest;
+					amReadyToLeave = true;
+				}
+				break;
 			case SITUATION.PlayerAskedAboutKid2:
 				GameManager.Instance.teacherKnowsPlayer = true;
 				if (optionID == 0) nextContext = SITUATION.PlayerAskedAboutSunblind;
@@ -181,6 +211,8 @@ public class TeacherNPC : BeigeNPC, IDialogue
 
 	public SITUATION GetInitialContext()
 	{
+		if (GameManager.Instance.npcsPrepareToLeave)
+			return SITUATION.EscapeQuest;
 		if (_isFriendlyTowardsPlayer)
 			return SITUATION.NormalGreating;
 		else

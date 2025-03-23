@@ -50,6 +50,10 @@ public class CookNPC : BeigeNPC, IDialogue
 				currentline = "You hungry?";
 				dialogueOptions = new List<string> { "Who are you?", "What's cooking? It smells delicious." };
 				break;
+			case SITUATION.EscapeQuest:
+				currentline = "I'm not leaving, so don't even try.";
+				dialogueOptions.Add("Sure.");
+				break;
 			case SITUATION.PlayerAskedName:
 				if (_alreadyaskedName)
 				{
@@ -152,6 +156,10 @@ public class CookNPC : BeigeNPC, IDialogue
 					nextContext = SITUATION.PlayerAskedWhatYouDoing;
 				}
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.EscapeQuest:
+				_playerAskedToLeave = true;
+				nextContext = SITUATION.SmallTalk;
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.SmallTalk:
 				myData.shouldGreatPlayer = false;
 				if (optionID == 0)
@@ -230,9 +238,11 @@ public class CookNPC : BeigeNPC, IDialogue
 		}
 
 	}
-
+	bool _playerAskedToLeave = false;
 	public SITUATION GetInitialContext()
 	{
+		if (GameManager.Instance.npcsPrepareToLeave && !_playerAskedToLeave)
+			return SITUATION.EscapeQuest;
 		if (GameManager.Instance.isTeacherFreakingOut || killedTeacher)
 		{
 			return SITUATION.NPCWarning;

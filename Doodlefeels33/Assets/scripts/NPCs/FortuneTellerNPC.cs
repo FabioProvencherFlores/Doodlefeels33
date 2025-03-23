@@ -28,6 +28,12 @@ public class FortuneTellerNPC : BeigeNPC, IDialogue
 			case SITUATION.NormalGreating:
 				currentline = "I miss the stars more than anything. What living is there for us if we can't look at the sky that saw us grow.";
 				break;
+			case SITUATION.EscapeQuest:
+				removeGoodbye = true;
+				currentline = "I forsee a lot of Death outside. The Solar Eye is upon us, waiting. Are you sure you want us to leave?";
+				dialogueOptions.Add("I trust your visions. Let's stay.");
+				dialogueOptions.Add("Yes, we need to leave. Now.");
+				break;
 			case SITUATION.PlayerAskedToGoToJail:
 				removeGoodbye = true;
 				if (myData.playerHasAskedForJail)
@@ -64,6 +70,18 @@ public class FortuneTellerNPC : BeigeNPC, IDialogue
 					return;
 				}
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.EscapeQuest:
+				_playerAskedToLeave = true;
+				if (optionID == 0)
+				{
+					nextContext = SITUATION.NormalGreating;
+				}
+				else if (optionID == 1)
+				{
+					amReadyToLeave = true;
+					GameManager.Instance.GoToGym();
+				}
+				break;
 			case SITUATION.NormalGreating:
 			case SITUATION.BackedDownFromJailRequest:
 			case SITUATION.PassiveChecks:
@@ -82,9 +100,11 @@ public class FortuneTellerNPC : BeigeNPC, IDialogue
 			myData.playerWantsToJailMe = true;
 		}
 	}
-
+	bool _playerAskedToLeave = false;
 	public SITUATION GetInitialContext()
 	{
+		if (GameManager.Instance.npcsPrepareToLeave && !_playerAskedToLeave)
+			return SITUATION.EscapeQuest;
 		return SITUATION.NormalGreating;
 	}
 

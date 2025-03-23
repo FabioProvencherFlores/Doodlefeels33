@@ -14,8 +14,11 @@ public class Kid2NPC : BeigeNPC, IDialogue
 			return customSprite;
 		}
 	}
-	bool _playerKnowsName = false;
+	
 	bool _isFriendWithPlayer = false;
+
+	public bool isCured = false;
+	public int nbNightsInPrison = 0;
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
@@ -33,7 +36,7 @@ public class Kid2NPC : BeigeNPC, IDialogue
 				if (!_isFriendWithPlayer && GameManager.Instance.teacherKnowsPlayer)
 				{
 					string question = "Don't worry, she knows me. I'm a friend.";
-					if (!_playerKnowsName)
+					if (!GameManager.Instance.playerKnowsKid2Name)
 						question += " What's your name?";
 					dialogueOptions.Add(question);
 				}
@@ -47,7 +50,7 @@ public class Kid2NPC : BeigeNPC, IDialogue
 				break;
 			case SITUATION.PlayerAskedName:
 				currentline = "Mommy calls me Timothy, but only when no one can hear.";
-				_playerKnowsName = true;
+				GameManager.Instance.playerKnowsKid2Name = true;
 				dialogueOptions.Add("Well Timothy, do you want to play?");
 				dialogueOptions.Add("Careful no one else hears it. Do you know where we are?");
 				break;

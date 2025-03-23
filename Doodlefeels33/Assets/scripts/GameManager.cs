@@ -73,6 +73,20 @@ public class GameManager : MonoBehaviour
 	bool _didSomeoneDiedInJail = false;
 	int daysSinceStart = 0;
 	int daysWithoutInsident = 0;
+	public bool playerLookingForBatteries = false;
+	
+	public bool playerFoundBatteries = false;
+	public bool npcsPrepareToLeave = false;
+	int escapeQuestStart = 0;
+
+	public void TriggerEscapeQuest()
+	{
+		if (!npcsPrepareToLeave)
+		{
+			npcsPrepareToLeave = true;
+			escapeQuestStart = daysSinceStart;
+		}
+	}
 
 	public bool AreInteractionsRemaining()
 	{
@@ -81,6 +95,7 @@ public class GameManager : MonoBehaviour
 
 	private void Awake()
 	{
+		playerFoundBatteries = false;
 		_instance = this;
 		if (jailVisual == null)
 		{
@@ -203,10 +218,27 @@ public class GameManager : MonoBehaviour
 
 	int nbDayHisteriaTeacher = 0;
 
+	public bool playerKnowsKid2Name = false;
+
 	void ProcessNight()
 	{
+		if (!_kid2NPC.amDead && _kid2NPC.amJailed)
+		{
+			if (_kid2NPC.nbNightsInPrison > 1)
+			{
+				Debug.Log("KID CURED");
+				_kid2NPC.isCured = true;
+			}
+			_kid2NPC.nbNightsInPrison++;
+		}
+		else
+		{
+			_kid2NPC.nbNightsInPrison = 0;
+		}
+
+
 		bool noOneDied = true;
-		if (daysSinceStart > 1 && daysSinceStart %2 == 0 && !_kid2NPC.amDead)
+		if (daysSinceStart > 1 && daysSinceStart %2 == 0 && !_kid2NPC.amDead && !_kid2NPC.isCured)
 		{
 			Debug.Log("killing starts!");
 
@@ -235,6 +267,63 @@ public class GameManager : MonoBehaviour
 
 					noOneDied = false;
 					_cookNPC.killedTeacher = true;
+				}
+			}
+		}
+
+		if (npcsPrepareToLeave)
+		{
+			if (escapeQuestStart + 2 < daysSinceStart)
+			{
+				if (_contructionNPC.amReadyToLeave && !_contructionNPC.amJailed)
+				{
+					_contructionNPC.amDead = true;
+					_contructionNPC.amMissing = true;
+				}
+				if (_antiquarianNPC.amReadyToLeave && !_antiquarianNPC.amJailed)
+				{
+					_antiquarianNPC.amDead = true;
+					_antiquarianNPC.amMissing = true;
+				}
+				if (_veteranNPC.amReadyToLeave && !_veteranNPC.amJailed)
+				{
+					_veteranNPC.amDead = true;
+					_veteranNPC.amMissing = true;
+				}
+				if (_kid1NPC.amReadyToLeave && !_kid1NPC.amJailed)
+				{
+					_kid1NPC.amDead = true;
+					_kid1NPC.amMissing = true;
+				}
+				if (_medicNPC.amReadyToLeave && !_medicNPC.amJailed)
+				{
+					_medicNPC.amDead = true;
+					_medicNPC.amMissing = true;
+				}
+				if (_fortuneTellerNPC.amReadyToLeave && !_fortuneTellerNPC.amJailed)
+				{
+					_fortuneTellerNPC.amDead = true;
+					_fortuneTellerNPC.amMissing = true;
+				}
+				if (_itNPC.amReadyToLeave && !_itNPC.amJailed)
+				{
+					_itNPC.amDead = true;
+					_itNPC.amMissing = true;
+				}
+				if (_cookNPC.amReadyToLeave && !_cookNPC.amJailed)
+				{
+					_cookNPC.amDead = true;
+					_cookNPC.amMissing = true;
+				}
+				if (_teachNPC.amReadyToLeave && !_teachNPC.amJailed)
+				{
+					if (!_teachNPC.amDead && !_kid2NPC.amJailed)
+					{
+						_kid2NPC.amDead = true;
+						_kid2NPC.amMissing = true;
+					}
+					_teachNPC.amDead = true;
+					_teachNPC.amMissing = true;
 				}
 			}
 		}

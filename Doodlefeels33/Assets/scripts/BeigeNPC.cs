@@ -56,7 +56,9 @@ public enum SITUATION
 	PlayerAskedToPlay,
 	PlayerAskedAboutKid2,
 	NPCWarning,
-	NPCAggroPlayer
+	NPCAggroPlayer,
+	PlayerAskedAboutBatteries,
+	EscapeQuest
 }
 
 
@@ -71,6 +73,8 @@ public class BeigeNPC : MonoBehaviour
 	public bool amDead = false;
 
 	public bool amJailed = false;
+
+	public bool amReadyToLeave = false;
 
 	protected SITUATION currentContext;
 	protected SITUATION nextContext;

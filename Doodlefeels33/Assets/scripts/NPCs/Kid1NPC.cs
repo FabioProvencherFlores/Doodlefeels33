@@ -38,6 +38,9 @@ public class Kid1NPC : BeigeNPC, IDialogue
 			case SITUATION.NormalGreating:
 				currentline = "I want to go outside!";
 				break;
+			case SITUATION.EscapeQuest:
+				currentline = "Yeah, let's leave! Let's ALL go outside!!!";
+				break;
 			case SITUATION.PlayerAskedToGoToJail:
 				removeGoodbye = true;
 				currentline = "I'll kill you.";
@@ -79,6 +82,10 @@ public class Kid1NPC : BeigeNPC, IDialogue
 					return;
 				}
 				break;
+			case SITUATION.EscapeQuest:
+				amReadyToLeave = true;
+				_playerAskedToLeave = true;
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.PlayerAskedToGoToJail:
 				myData.playerHasAskedForJail = true;
 				GameManager.Instance.kid1WillKillMe = true;
@@ -109,9 +116,11 @@ public class Kid1NPC : BeigeNPC, IDialogue
 			myData.playerWantsToJailMe = true;
 		}
 	}
-
+	bool _playerAskedToLeave = false;
 	public SITUATION GetInitialContext()
 	{
+		if (GameManager.Instance.npcsPrepareToLeave && !_playerAskedToLeave)
+			return SITUATION.EscapeQuest;
 		if (GameManager.Instance.kid1WillKillMe && !myData.playerWantsToJailMe) return SITUATION.NPCAggroPlayer;
 		if (myData.playerWantsToJailMe) return SITUATION.AngryGreating;
 		return SITUATION.NormalGreating;

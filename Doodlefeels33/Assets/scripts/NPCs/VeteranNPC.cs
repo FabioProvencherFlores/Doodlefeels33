@@ -14,6 +14,8 @@ public class VeteranNPC : BeigeNPC, IDialogue
 		}
 	}
 
+
+	bool _playerAskedToLeave = false;
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
@@ -26,7 +28,20 @@ public class VeteranNPC : BeigeNPC, IDialogue
 		switch (currentContext)
 		{
 			case SITUATION.NormalGreating:
-				currentline = "Yes captain?";
+				if (amReadyToLeave)
+				{
+					currentline = "Anything else before we leave?";
+				}
+				else
+				{
+					currentline = "Yes captain?";
+				}
+				break;
+			case SITUATION.EscapeQuest:
+				removeGoodbye= true;
+				currentline = "I'll follow you, captain. Just tell me what is best!";
+				dialogueOptions.Add("It's best if we stay here.");
+				dialogueOptions.Add("You should pack light, there is a long road ahead.");
 				break;
 			case SITUATION.PlayerAskedToGoToJail:
 				removeGoodbye = true;
@@ -57,6 +72,13 @@ public class VeteranNPC : BeigeNPC, IDialogue
 					return;
 				}
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.EscapeQuest:
+				if (optionID == 1)
+				{
+					amReadyToLeave = true;
+				}
+				nextContext = SITUATION.NormalGreating;
+				break;
 			case SITUATION.NormalGreating:
 			case SITUATION.BackedDownFromJailRequest:
 			case SITUATION.PassiveChecks:
@@ -78,6 +100,8 @@ public class VeteranNPC : BeigeNPC, IDialogue
 
 	public SITUATION GetInitialContext()
 	{
+		if (GameManager.Instance.npcsPrepareToLeave && !_playerAskedToLeave)
+			return SITUATION.EscapeQuest;
 		return SITUATION.NormalGreating;
 	}
 

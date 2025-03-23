@@ -26,6 +26,7 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 		{
 			case SITUATION.NormalGreating:
 				currentline = "We are all doomed and yet, here we stand in fear of the sun that made us surge with life.";
+				if (GameManager.Instance.playerLookingForBatteries) dialogueOptions.Add("I'm looking for batteries. Got some?");
 				break;
 			case SITUATION.PlayerAskedToGoToJail:
 				removeGoodbye= true;
@@ -35,6 +36,11 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 				break;
 			case SITUATION.BackedDownFromJailRequest:
 				currentline = "Ok.";
+				if (GameManager.Instance.playerLookingForBatteries) dialogueOptions.Add("Nevermind that. Do you have batteries to spare?");
+				break;
+			case SITUATION.PlayerAskedAboutBatteries:
+				currentline = "What's in there for me? Ha, you know want... here they are. I'm tired of all this.";
+				dialogueOptions.Add("Thank you...");
 				break;
 		}
 
@@ -56,8 +62,20 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 					return;
 				}
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerAskedAboutBatteries:
+				GameManager.Instance.playerFoundBatteries = true;
+				if (optionID != 4)
+				{
+					amMissing = true;
+					amDead = true;
+					GameManager.Instance.GoToGym();
+					return;
+				}
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.NormalGreating:
 			case SITUATION.BackedDownFromJailRequest:
+				if (GameManager.Instance.playerLookingForBatteries) nextContext = SITUATION.PlayerAskedAboutBatteries;
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.PassiveChecks:
 			default:
 				if (optionID == 3)
