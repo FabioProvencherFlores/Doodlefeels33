@@ -83,7 +83,7 @@ public class CookNPC : BeigeNPC, IDialogue
 				break;
 
 			case SITUATION.PlayerAskedWhereAreWe:
-				currentline = "You got sunblind? You should check with that sleepy doctor over there.";
+				currentline = "You got sunblind, or what? Go bother that sleepy doctor over there instead.";
 				break;
 			case SITUATION.PlayerApologized:
 				currentline = "Good.";

@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 	GameObject goToBedButton;
 	[SerializeField]
 	GameObject blackSquareForNight;
+	int daysSinceStart = 0;
 
 	[Header("Scene management")]
 	[SerializeField]
@@ -56,6 +57,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] CookNPC _cookNPC;
 	[SerializeField] MedicNPC _medicNPC;
 	[SerializeField] TeacherNPC _teachNPC;
+	[SerializeField] Kid2NPC _kid2NPC;
 
 	public bool AreInteractionsRemaining()
 	{
@@ -89,6 +91,10 @@ public class GameManager : MonoBehaviour
 		{
 			return _medicNPC;
 		}
+		if (id == 5)
+		{
+			return _kid2NPC;
+		}
 		if (id == 7)
 		{
 			return _teachNPC;
@@ -105,6 +111,7 @@ public class GameManager : MonoBehaviour
 		blackSquareForNight.SetActive(false);
 		remainingInteractions = nbOfInteractionsPerDay;
 		_medicNPC._willrefusetotalkuntiltomorrow = false;
+		daysSinceStart++;
 	}
 
 	public void GoToSleep()
@@ -173,6 +180,16 @@ public class GameManager : MonoBehaviour
 		else
 		{
 			_medicNPC.gameObject.SetActive(true);
+		}
+		
+		if (_kid2NPC.amMissing)
+		{
+			_kid2NPC.gameObject.SetActive(false);
+			_hasJailedNPC |= _kid2NPC.amJailed;
+		}
+		else
+		{
+			_kid2NPC.gameObject.SetActive(true);
 		}
 
 
@@ -264,4 +281,6 @@ public class GameManager : MonoBehaviour
 			(prisoner.myData.daysInPrison)++;
 		}
 	}
+
+	public bool teacherKnowsPlayer = false;
 }
