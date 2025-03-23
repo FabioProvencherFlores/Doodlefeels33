@@ -53,7 +53,8 @@ public enum SITUATION
 	PlayerAskedHowLong,
 	PlayerAskedWhatYouDoing,
 	PlayerASkedWhyYouHere,
-	PlayerAskedToPlay
+	PlayerAskedToPlay,
+	PlayerAskedAboutKid2
 }
 
 
