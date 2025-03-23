@@ -18,11 +18,13 @@ public class main_menu : MonoBehaviour
         tutorial2_screen.SetActive(true);
     }
 
-
-
-
     public void NewGame()
     {
         SceneManager.LoadScene("MainGame");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
