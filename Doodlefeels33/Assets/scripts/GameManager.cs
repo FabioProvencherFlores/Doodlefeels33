@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -181,6 +182,7 @@ public class GameManager : MonoBehaviour
 
 		// change scene here
 		Debug.Log(":(");
+		SceneManager.LoadScene("GameoverScene");
 	}
 
 	public IEnumerator GoToWinScreen()
@@ -189,6 +191,7 @@ public class GameManager : MonoBehaviour
 		
 		// change scene here
 		Debug.Log(":)");
+		SceneManager.LoadScene("WinScene");
 	}
 
 	public void GoToSleep()
