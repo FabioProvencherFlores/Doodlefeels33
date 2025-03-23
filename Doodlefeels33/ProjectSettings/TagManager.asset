@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - chain_sfx
+  - hover_sfx
   layers:
   - Default
   - TransparentFX

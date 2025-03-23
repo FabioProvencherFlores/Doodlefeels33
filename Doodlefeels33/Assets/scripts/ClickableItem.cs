@@ -19,6 +19,7 @@ public class ClickableItem : MonoBehaviour
 
 	private AudioSource sfx_click;
 	private AudioSource sfx_jail_click;
+	private AudioSource sfx_hover;
 	
 
 
@@ -32,6 +33,7 @@ public class ClickableItem : MonoBehaviour
 	{
 		sfx_click = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
 		sfx_jail_click = GameObject.FindGameObjectWithTag("chain_sfx").GetComponent<AudioSource>();
+		sfx_hover = GameObject.FindGameObjectWithTag("hover_sfx").GetComponent<AudioSource>();
 		_npcController = GetComponent<IDialogue>();
 		_spriteTransform = gameObject.transform;
 	}
@@ -93,6 +95,7 @@ public class ClickableItem : MonoBehaviour
 	}
 	private void ChangeToHovered()
 	{
+		sfx_hover.Play();
 		_spriteTransform.localScale = startingScale * 1.1f;
 		_isShowingHover = true;
 	}
