@@ -1139,9 +1139,9 @@ GameObject:
   - component: {fileID: 360984991}
   - component: {fileID: 360984996}
   - component: {fileID: 360984995}
-  - component: {fileID: 360984994}
   - component: {fileID: 360984993}
   - component: {fileID: 360984997}
+  - component: {fileID: 360984998}
   m_Layer: 0
   m_Name: Kid2_clickable
   m_TagString: Untagged
@@ -1158,7 +1158,7 @@ Transform:
   m_GameObject: {fileID: 360984990}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.2, y: -11.66, z: 22}
+  m_LocalPosition: {x: -7.5, y: -11.66, z: 18.42}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1178,28 +1178,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverGracePeriod: 0.1
   clickShouldGoToDialogue: 1
---- !u!64 &360984994
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 360984990}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &360984995
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1269,6 +1247,27 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   customSprite: {fileID: 2100000, guid: f49f5857c22ba475d99a673082dd7176, type: 2}
+--- !u!65 &360984998
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360984990}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.30336103, y: 0.55704194, z: 6.1232336e-17}
+  m_Center: {x: 0.030108977, y: -0.22147904, z: 0}
 --- !u!1 &365256097
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,6 +2026,8 @@ MonoBehaviour:
   jailObjects: {fileID: 1430634902}
   dialogueManager: {fileID: 1780261614}
   _cookNPC: {fileID: 221485256}
+  _medicNPC: {fileID: 1227650881}
+  _teachNPC: {fileID: 1060835770}
 --- !u!4 &535586843
 Transform:
   m_ObjectHideFlags: 0
@@ -2776,7 +2777,8 @@ Transform:
   m_LocalPosition: {x: -17.1109, y: -4.9000998, z: 19.31}
   m_LocalScale: {x: 4.099704, y: 1, z: 2.0138981}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2034740399}
   m_Father: {fileID: 2017749027}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
 --- !u!64 &991251506
@@ -3193,7 +3195,7 @@ Transform:
   m_GameObject: {fileID: 1060835763}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.73, y: -11.66, z: 0.98}
+  m_LocalPosition: {x: -9.91, y: -11.66, z: 20.51}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3670,6 +3672,9 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   customSprite: {fileID: 2100000, guid: ec59451b02d194bb2a345c047c11bb1c, type: 2}
+  _isTrustingTowardsPlayer: 0
+  _playerAskedToManyQuestions: 0
+  _willrefusetotalkuntiltomorrow: 0
 --- !u!1 &1238345354
 GameObject:
   m_ObjectHideFlags: 0
@@ -4058,7 +4063,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1586550199
 Transform:
   m_ObjectHideFlags: 0
@@ -5162,7 +5167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2017749027
 Transform:
   m_ObjectHideFlags: 0
@@ -5180,7 +5185,6 @@ Transform:
   - {fileID: 18574059}
   - {fileID: 2099770482}
   - {fileID: 991251505}
-  - {fileID: 2034740399}
   - {fileID: 1365638461}
   - {fileID: 917816529}
   - {fileID: 774709464}
@@ -5443,12 +5447,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2034740398}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00094030536, y: 0.9999995, z: -0.00007666747, w: -0.00024973013}
-  m_LocalPosition: {x: 2.8, y: -15, z: 23.5}
-  m_LocalScale: {x: 4.099704, y: 1, z: 3.0537105}
+  m_LocalRotation: {x: -0.4993685, y: 0.5005573, z: -0.4996906, w: 0.5003828}
+  m_LocalPosition: {x: -1.0220251, y: 19.910885, z: 5.0151143}
+  m_LocalScale: {x: 4.0996866, y: 0.49655023, z: 0.74486125}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2017749027}
+  m_Father: {fileID: 991251505}
   m_LocalEulerAnglesHint: {x: 179.991, y: 0.029006958, z: -179.892}
 --- !u!64 &2034740400
 MeshCollider:
