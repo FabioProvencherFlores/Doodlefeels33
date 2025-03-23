@@ -171,15 +171,15 @@ public class GameManager : MonoBehaviour
 
 	BeigeNPC ChooseNextDeath(bool inJail)
 	{
-		if (_contructionNPC.amJailed == inJail) return _contructionNPC;
-		if (_antiquarianNPC.amJailed == inJail) return _antiquarianNPC;
-		if (_veteranNPC.amJailed == inJail) return _veteranNPC;
-		if (_kid1NPC.amJailed == inJail) return _kid2NPC;
-		if (_medicNPC.amJailed == inJail) return _medicNPC;
-		if (_fortuneTellerNPC.amJailed == inJail) return _fortuneTellerNPC;
-		if (_itNPC.amJailed == inJail) return _itNPC;
-		if (_cookNPC.amJailed == inJail) return _cookNPC;
-		if (_teachNPC.amJailed == inJail) return _teachNPC;
+		if (!_contructionNPC.amDead && _contructionNPC.amJailed == inJail) return _contructionNPC;
+		if (!_antiquarianNPC.amDead && _antiquarianNPC.amJailed == inJail) return _antiquarianNPC;
+		if (!_veteranNPC.amDead && _veteranNPC.amJailed == inJail) return _veteranNPC;
+		if (!_kid1NPC.amDead && _kid1NPC.amJailed == inJail) return _kid2NPC;
+		if (!_medicNPC.amDead && _medicNPC.amJailed == inJail) return _medicNPC;
+		if (!_fortuneTellerNPC.amDead && _fortuneTellerNPC.amJailed == inJail) return _fortuneTellerNPC;
+		if (!_itNPC.amDead && _itNPC.amJailed == inJail) return _itNPC;
+		if (!_cookNPC.amDead && _cookNPC.amJailed == inJail) return _cookNPC;
+		if (!_teachNPC.amDead && _teachNPC.amJailed == inJail) return _teachNPC;
 
 		return null;
 	}
