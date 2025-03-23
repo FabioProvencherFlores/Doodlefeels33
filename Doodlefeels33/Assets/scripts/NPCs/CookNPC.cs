@@ -95,7 +95,7 @@ public class CookNPC : BeigeNPC, IDialogue
 				break;
 			case SITUATION.AngryGreating:
 				currentline = "You again. What do you want?";
-				dialogueOptions = new List<string> { "Let's start again" };
+				dialogueOptions = new List<string> { "Nevermind." };
 				break;
 			case SITUATION.PlayerAskedHowLong:
 				currentline = "Been here a while. I think only that teacher was here before I was. Days get fuzzy, can't remember much.";
@@ -182,6 +182,9 @@ public class CookNPC : BeigeNPC, IDialogue
 				}
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.AngryGreating:
+				_numberOfSmalltalk = 3;
+				nextContext = SITUATION.SmallTalk;
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.PassiveChecks:
 			default:
 				if (optionID == 3)
@@ -203,12 +206,7 @@ public class CookNPC : BeigeNPC, IDialogue
 
 	public SITUATION GetInitialContext()
 	{
-		if (myData.playerWantsToJailMe)
-		{
-			return SITUATION.PlayerAskedToGoToJail;
-		}
-
-		else if (myData.shouldGreatPlayer)
+		if (myData.shouldGreatPlayer)
 		{
 			if (myData.playerHasAskedForJail)
 			{
@@ -225,6 +223,7 @@ public class CookNPC : BeigeNPC, IDialogue
 
 	public void InitNewDialogue()
 	{
+		myData.shouldGreatPlayer = true;
 		currentContext = GetInitialContext();
 		nextContext	= currentContext;
 		myData.Reset();
