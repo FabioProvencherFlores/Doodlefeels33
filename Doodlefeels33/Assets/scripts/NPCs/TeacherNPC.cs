@@ -97,7 +97,8 @@ public class TeacherNPC : BeigeNPC, IDialogue
 				currentline = "I'm sorry. Everyone seems a bit jumpy since the hunter disappeared. It's not your fault. I'm glad you are here.";
 				dialogueOptions.Add("How did you get here?");
 				dialogueOptions.Add("Is something wrong?");
-				break;
+                if (GameManager.Instance.playerLookingForBatteries && !GameManager.Instance.playerFoundBatteries) dialogueOptions.Add("I'm looking for batteries.");
+                break;
 			case SITUATION.PlayerASkedWhyYouHere:
 				if (_isFriendlyTowardsPlayer)
 				{
@@ -211,6 +212,7 @@ public class TeacherNPC : BeigeNPC, IDialogue
 				_isFriendlyTowardsPlayer = true;
 				if (optionID == 0) nextContext = SITUATION.PlayerASkedWhyYouHere;
 				if (optionID == 1) nextContext = SITUATION.PlayerAskedAboutSunblind;
+				if (optionID == 2) nextContext = SITUATION.PlayerAskedAboutBatteries;
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.PlayerAskedAboutSunblind:
 				_isFriendlyTowardsPlayer = true;

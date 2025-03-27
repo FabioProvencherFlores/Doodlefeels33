@@ -57,16 +57,16 @@ public class GameManager : MonoBehaviour
 	public IDialogue _currentNPC;
 
 	[Header("All NPCs")]
-	[SerializeField] CookNPC _cookNPC;
-	[SerializeField] MedicNPC _medicNPC;
-	[SerializeField] AntiquarianNPC _antiquarianNPC;
-	[SerializeField] itNPC _itNPC;
-	[SerializeField] Kid1NPC _kid1NPC;
-	[SerializeField] Kid2NPC _kid2NPC;
-	[SerializeField] VeteranNPC _veteranNPC;
-	[SerializeField] TeacherNPC _teachNPC;
-	[SerializeField] FortuneTellerNPC _fortuneTellerNPC;
-	[SerializeField] ContructionNPC _contructionNPC;
+	[SerializeField] public CookNPC _cookNPC;
+	[SerializeField] public MedicNPC _medicNPC;
+	[SerializeField] public AntiquarianNPC _antiquarianNPC;
+	[SerializeField] public itNPC _itNPC;
+	[SerializeField] public Kid1NPC _kid1NPC;
+	[SerializeField] public Kid2NPC _kid2NPC;
+	[SerializeField] public VeteranNPC _veteranNPC;
+	[SerializeField] public TeacherNPC _teachNPC;
+	[SerializeField] public FortuneTellerNPC _fortuneTellerNPC;
+	[SerializeField] public ContructionNPC _contructionNPC;
 
 	[Header("The killing")]
 	[SerializeField]
