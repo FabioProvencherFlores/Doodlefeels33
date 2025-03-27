@@ -31,10 +31,23 @@ public class ContructionNPC : BeigeNPC, IDialogue
 					currentline = "I just got done with the windows, and that fucking sun is already peering through. We won't last long at this rate...";
 					_saidFirstInfo = true;
 				}
+				else if (GameManager.Instance.playerFoundBatteries && !GameManager.Instance.npcsPrepareToLeave) currentline = "You should get the batteries to that nerd. The shithead's probably got some use for them...";
 				else if (GameManager.Instance.IsMorning()) currentline = "Mornin'";
 				else if (GameManager.Instance.IsEvening()) currentline = "Evenin'";
 				else currentline = "Hey.";
+
+				string question = "How ";
+                if (!_saidFirstInfo) question += "else ";
+				dialogueOptions.Add(question + "can we protect ourselves against the sun's glare?");
+
+				if (GameManager.Instance.playerLookingForBatteries && !GameManager.Instance.playerFoundBatteries) dialogueOptions.Add("I'm looking for batteries.");
 			
+				break;
+			case SITUATION.PlayerAskedForInfo:
+				currentline = "You want darkness? Get in there and shut that fucking red door behind. That's the only safe place remaining to be honest.";
+				break;
+			case SITUATION.PlayerAskedAboutBatteries:
+				currentline = "Good for you. Hell, I might have some in my old flashlight. I lent it to the old lady with the kids. If you could get it for me, that'd be great.";
 				break;
 			case SITUATION.PlayerAskedToGoToJail:
 				removeGoodbye = true;
@@ -67,13 +80,20 @@ public class ContructionNPC : BeigeNPC, IDialogue
 				}
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.NormalGreating:
+				if (optionID == 0) nextContext = SITUATION.PlayerAskedForInfo;
+				if (optionID == 1) nextContext = SITUATION.PlayerAskedAboutBatteries;
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerAskedAboutBatteries:
 			case SITUATION.BackedDownFromJailRequest:
+			case SITUATION.PlayerAskedForInfo:
 			case SITUATION.PassiveChecks:
-			default:
 				if (optionID == 3)
 				{
 					GameManager.Instance.GoToGym();
 				}
+				break;
+			default:
+				Debug.LogError("Dialogue state is not supported: " + currentContext.ToString(), this);
 				break;
 		}
 

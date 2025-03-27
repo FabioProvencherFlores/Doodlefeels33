@@ -18,6 +18,7 @@ public class TeacherNPC : BeigeNPC, IDialogue
 	bool _isProtectiveToKid2 = true;
 	bool _neverAskedJail = true;
 
+	int _numberOfHellos = 0;
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
@@ -36,6 +37,34 @@ public class TeacherNPC : BeigeNPC, IDialogue
 		switch (currentContext)
 		{
 			case SITUATION.NormalGreating:
+				if (_numberOfHellos == 0)
+				{
+					currentline = "That cook keeps looking at me funny...";
+					_numberOfHellos++;
+                }
+				else if (_numberOfHellos == 1)
+				{
+					currentline = "Days are getting brighter...";
+					_numberOfHellos++;
+
+                }
+				else if (_numberOfHellos == 2)
+				{
+					currentline = "The food situation is getting dire. We are running out of cans.";
+					_numberOfHellos++;
+				}
+				else
+				{
+					currentline = "Yes?";
+				}
+				dialogueOptions.Add("You seem stressed...");
+				dialogueOptions.Add("How did you find this place?");
+                if (GameManager.Instance.playerLookingForBatteries && !GameManager.Instance.playerFoundBatteries) dialogueOptions.Add("I'm looking for batteries.");
+
+                break;
+			case SITUATION.PlayerAskedAboutBatteries:
+				currentline = "Yes, got some in my handlight. I guess I could spare some of them if you really need them... Please bring them back to me right after. I need them for my baby to check... nevermind. Here, take them.";
+                break;
 			case SITUATION.AngryGreating:
 				currentline = "Don't make me regret to letting you in.";
 				dialogueOptions.Add("Don't worry, I mean no trouble.");
@@ -188,16 +217,25 @@ public class TeacherNPC : BeigeNPC, IDialogue
 				if (optionID == 0) nextContext = SITUATION.SmallTalk;
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.NormalGreating:
+				if (optionID == 0) nextContext = SITUATION.SmallTalk;
+				if (optionID == 1) nextContext = SITUATION.PlayerASkedWhyYouHere;
+				if (optionID == 2) nextContext = SITUATION.PlayerAskedAboutBatteries;
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.AngryGreating:
 				if (optionID == 0) nextContext = SITUATION.SmallTalk;
 				if (optionID == 1) nextContext = SITUATION.PlayerAskedAboutKid2;
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerAskedAboutBatteries:
+				GameManager.Instance.playerFoundBatteries = true;
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.PassiveChecks:
-			default:
 				if (optionID == 3)
 				{
 					GameManager.Instance.GoToGym();
 				}
+				break;
+			default:
+				Debug.LogError("unsuported dialogue option: " + currentContext.ToString(), this);
 				break;
 		}
 		// 4 is jail

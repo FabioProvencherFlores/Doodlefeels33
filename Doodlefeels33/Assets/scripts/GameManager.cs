@@ -80,6 +80,8 @@ public class GameManager : MonoBehaviour
 	public bool npcsPrepareToLeave = false;
 	int escapeQuestStart = 0;
 
+	public bool isMonsterHungryTonight = false;
+
 	public void TriggerEscapeQuest()
 	{
 		if (!npcsPrepareToLeave)
@@ -240,7 +242,7 @@ public class GameManager : MonoBehaviour
 
 
 		bool noOneDied = true;
-		if (daysSinceStart > 1 && daysSinceStart %2 == 0 && !_kid2NPC.amDead && !_kid2NPC.isCured)
+		if (daysSinceStart > 1 && isMonsterHungryTonight && !_kid2NPC.amDead && !_kid2NPC.isCured)
 		{
 			Debug.Log("killing starts!");
 
@@ -248,12 +250,17 @@ public class GameManager : MonoBehaviour
 			BeigeNPC victim = ChooseNextDeath(_kid2NPC.amJailed);
 			if (victim != null)
 			{
-				noOneDied = false;
+				isMonsterHungryTonight = false;
+                noOneDied = false;
 				victim.amDead = true;
 				victim.amMissing = true;
 				if (victim.amJailed) _didSomeoneDiedInJail = true;
 			}
 		}
+		else if (!isMonsterHungryTonight)
+		{
+			isMonsterHungryTonight = true;
+        }
 
 		if (isTeacherFreakingOut) nbDayHisteriaTeacher++;
 
