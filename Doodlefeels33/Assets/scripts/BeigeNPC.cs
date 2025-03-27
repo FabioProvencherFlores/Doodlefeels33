@@ -54,7 +54,9 @@ public enum SITUATION
 	PlayerAskedWhatYouDoing,
 	PlayerASkedWhyYouHere,
 	PlayerAskedToPlay,
+	PlayerAskedForInfo,
 	PlayerAskedAboutKid2,
+	PlayerAskedAboutDisappearance,
 	NPCWarning,
 	NPCAggroPlayer,
 	PlayerAskedAboutBatteries,
@@ -85,6 +87,12 @@ public class BeigeNPC : MonoBehaviour
 		return !removeGoodbye;
 	}
 
+	public bool isLeavingToGym = false;
+	public void LeaveToGym()
+	{
+		isLeavingToGym = true;
+        GameManager.Instance.GoToGym();
+    }
 
 	public virtual string GetJailLine() { return "I got nothing to say to you..."; }
 

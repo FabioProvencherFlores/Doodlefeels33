@@ -40,7 +40,7 @@ public class itNPC : BeigeNPC, IDialogue
 				break;
 			case SITUATION.PlayerAskedToGoToJail:
 				removeGoodbye = true;
-				currentline = "I won't be of any use in total darkness. Think about it, please.";
+				currentline = "I won't be of any use in total darkness. Think about it, okay?";
 				dialogueOptions.Add("You are right. Stay with us.");
 				dialogueOptions.Add("You need to go inside, it won't be for long.");
 				break;

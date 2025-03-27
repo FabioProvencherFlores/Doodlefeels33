@@ -41,7 +41,7 @@ public class DialogueManager : MonoBehaviour
         }
         
         _npcController.ProcessDialogueOption(anOptionID);
-        DoNewDialogueLoop();
+        if (GameManager.Instance.isInDialogue) DoNewDialogueLoop();
 	}
 
     public void InitDialogue(IDialogue npcController)

@@ -14,8 +14,11 @@ public class VeteranNPC : BeigeNPC, IDialogue
 		}
 	}
 
+	bool _suspectedGroupedPeople = false;
+	bool _suspectedCornerPeople = false;
 
 	bool _playerAskedToLeave = false;
+	int saidBackstory = 0;
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
@@ -35,7 +38,64 @@ public class VeteranNPC : BeigeNPC, IDialogue
 				else
 				{
 					currentline = "Yes captain?";
+					dialogueOptions.Add("Noticed anything strange to report?");
+					dialogueOptions.Add("I have a strange feeling. What type of signs should I be looking for?");
+					if (!GameManager.Instance.noOneDiedYet) dialogueOptions.Add("I noticed some people are missing all of the sudden.");
 				}
+				break;
+			case SITUATION.PlayerAskedForInfo:
+				if (GameManager.Instance.noOneDiedYet)
+				{
+					currentline = "Not much, since the Hunter disappeared. I'll keep you posted if I hear anything out of the ordinary.";
+				}
+				else
+				{
+					if (_suspectedGroupedPeople)
+					{
+                        currentline = "Precisely. Be wary of those folks.";
+					}	
+					else if (_suspectedCornerPeople)
+					{
+						currentline = "Not sure. They may certainly have more information to provide.";
+					}
+					else
+					{
+						currentline = "I heard some strange noises at night coming from the folks over there. You should check it surely out.";
+						dialogueOptions.Add("You mean that solitary lad over there?");
+						dialogueOptions.Add("You're refering to the group in the corner?");
+					}
+				}
+				break;
+			case SITUATION.PlayerASkedWhyYouHere:
+				print(saidBackstory);
+				if (saidBackstory == 0)
+				{
+					currentline = "I haven't always been old, y'know. Let's just say I've seen my fair share of death in my carrier.";
+					saidBackstory++;
+                }
+				else if (saidBackstory == 1)
+				{
+					currentline = "I was in the trained forced. I've done my duty. I have killed before. Don't worry, I'm not planning in steping out of retirement.";
+					saidBackstory++;
+                }
+				else if (saidBackstory == 2)
+				{
+					currentline = "When the Solar Eye awoke, I was at the park. Luckily I suffered a heat strike and passed out... I've seen what the Eye can do, how it changes people... They aren't people anymore."; 
+					saidBackstory++;
+                }
+				else
+				{
+					currentline = "Believe me, I wish I didn't. Anything else?";
+				}
+				break;
+			case SITUATION.PlayerAskedAboutSunblind:
+				currentline = "I've seen strange behaviours in the Outside times. Scary ones, at that. It usually manifests with light fever and headaches. Maybe the doctor up there can give you more information?";
+				dialogueOptions.Add("You seem pretty knowledgeable...");
+				break;
+			case SITUATION.PlayerAskedAboutDisappearance:
+				currentline = "If there's blood, there's bad omen. Someone among us is doing this. We need to find them... quick.";
+				dialogueOptions.Add("How do you know all this?");
+				dialogueOptions.Add("I'm concerned about it too. Anyone I should check?");
 				break;
 			case SITUATION.EscapeQuest:
 				removeGoodbye= true;
@@ -68,7 +128,7 @@ public class VeteranNPC : BeigeNPC, IDialogue
 				if (optionID == 1)
 				{
 					GameManager.Instance.PutCurrentNPCInJail();
-					GameManager.Instance.GoToGym();
+					LeaveToGym();
 					return;
 				}
 				goto case SITUATION.PassiveChecks;
@@ -80,13 +140,44 @@ public class VeteranNPC : BeigeNPC, IDialogue
 				nextContext = SITUATION.NormalGreating;
 				break;
 			case SITUATION.NormalGreating:
+				if (optionID == 0) nextContext = SITUATION.PlayerAskedForInfo;
+				else if (optionID == 1) nextContext = SITUATION.PlayerAskedAboutSunblind;
+				else if (optionID == 2) nextContext = SITUATION.PlayerAskedAboutDisappearance;
+                goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerAskedForInfo:
+				if (optionID == 0)
+				{
+					nextContext = SITUATION.PlayerAskedForInfo;
+                    _suspectedCornerPeople = true;
+				}
+				else if (optionID == 1)
+				{
+					nextContext = SITUATION.PlayerAskedForInfo;
+					_suspectedGroupedPeople = true;
+				}
+				else
+				{
+					_suspectedGroupedPeople = false;
+					_suspectedCornerPeople = false;
+				}
+                goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerAskedAboutDisappearance:
+				if (optionID == 0) nextContext = SITUATION.PlayerASkedWhyYouHere;
+				if (optionID == 1) nextContext = SITUATION.PlayerAskedForInfo;
+                goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerAskedAboutSunblind:
+				if (optionID == 0) nextContext = SITUATION.PlayerASkedWhyYouHere;
+                goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerASkedWhyYouHere:
 			case SITUATION.BackedDownFromJailRequest:
 			case SITUATION.PassiveChecks:
-			default:
 				if (optionID == 3)
 				{
-					GameManager.Instance.GoToGym();
-				}
+                    LeaveToGym();
+                }
+				break;
+			default:
+				Debug.LogError("Unsuported state in dialogue.", this);
 				break;
 		}
 

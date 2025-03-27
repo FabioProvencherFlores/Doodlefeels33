@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 	[Header("Dialogue Data")]
 	[SerializeField]
 	DialogueManager dialogueManager;
+	public bool isInDialogue = false;
 
 	public IDialogue _currentNPC;
 
@@ -146,51 +147,6 @@ public class GameManager : MonoBehaviour
 
 	public bool kid1WillKillMe = false;
 
-	void StartNewDay()
-	{
-		// fade in
-		blackSquareForNight.SetActive(false);
-		remainingInteractions = nbOfInteractionsPerDay;
-		_medicNPC._willrefusetotalkuntiltomorrow = false;
-		kid2WasJailedToday = _kid2NPC.amJailed;
-		daysSinceStart++;
-
-		bool everyoneDied = true;
-		if (!_contructionNPC.amDead) everyoneDied = false;
-		if (!_antiquarianNPC.amDead) everyoneDied = false;
-		if (!_veteranNPC.amDead) everyoneDied = false;
-		if (!_kid1NPC.amDead) everyoneDied = false;
-		if (!_medicNPC.amDead) everyoneDied = false;
-		if (!_fortuneTellerNPC.amDead) everyoneDied = false;
-		if (!_itNPC.amDead) everyoneDied = false;
-		if (!_cookNPC.amDead) everyoneDied = false;
-		if (!_teachNPC.amDead) everyoneDied = false;
-
-		if (everyoneDied)
-		{
-			redSquareForDeath.SetActive(true);
-			StartCoroutine(GotToFailureScreen());
-			return;
-		}
-
-		if (daysWithoutInsident >= 3)
-		{
-			StartCoroutine(GoToWinScreen());
-			return;
-		}
-
-		if (kid1WillKillMe && !_kid1NPC.amDead && !_kid1NPC.amJailed)
-		{
-			_currentNPC = _kid1NPC;
-			_kid1NPC.InitNewDialogue();
-			GoToDialogue();
-
-			return;
-		}
-
-		GoToGym();
-	}
-
 	public IEnumerator GotToFailureScreen()
 	{
 		yield return new WaitForSeconds(1);
@@ -220,7 +176,53 @@ public class GameManager : MonoBehaviour
 
 	public bool playerKnowsKid2Name = false;
 
-	void ProcessNight()
+    void StartNewDay()
+    {
+        // fade in
+        blackSquareForNight.SetActive(false);
+        remainingInteractions = nbOfInteractionsPerDay;
+        _medicNPC._willrefusetotalkuntiltomorrow = false;
+        kid2WasJailedToday = _kid2NPC.amJailed;
+        daysSinceStart++;
+
+        bool everyoneDied = true;
+        if (!_contructionNPC.amDead) everyoneDied = false;
+        if (!_antiquarianNPC.amDead) everyoneDied = false;
+        if (!_veteranNPC.amDead) everyoneDied = false;
+        if (!_kid1NPC.amDead) everyoneDied = false;
+        if (!_medicNPC.amDead) everyoneDied = false;
+        if (!_fortuneTellerNPC.amDead) everyoneDied = false;
+        if (!_itNPC.amDead) everyoneDied = false;
+        if (!_cookNPC.amDead) everyoneDied = false;
+        if (!_teachNPC.amDead) everyoneDied = false;
+
+        if (everyoneDied)
+        {
+            redSquareForDeath.SetActive(true);
+            StartCoroutine(GotToFailureScreen());
+            return;
+        }
+
+        if (daysWithoutInsident >= 3)
+        {
+            StartCoroutine(GoToWinScreen());
+            return;
+        }
+
+        if (kid1WillKillMe && !_kid1NPC.amDead && !_kid1NPC.amJailed)
+        {
+            _currentNPC = _kid1NPC;
+            _kid1NPC.InitNewDialogue();
+            GoToDialogue();
+
+            return;
+        }
+
+        GoToGym();
+    }
+
+	public bool noOneDiedYet = true;
+    void ProcessNight()
 	{
 		if (!_kid2NPC.amDead && _kid2NPC.amJailed)
 		{
@@ -334,7 +336,8 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			daysWithoutInsident = 0;
+			noOneDiedYet = false;
+            daysWithoutInsident = 0;
 		}
 	}
 
@@ -520,7 +523,8 @@ public class GameManager : MonoBehaviour
 			return;
 		}
 
-		remainingInteractions--;
+		isInDialogue = true;
+        remainingInteractions--;
 		((IDialogue)_currentNPC).InitNewDialogue();
 		gymObjects.SetActive(false);
 		jailObjects.SetActive(false);
@@ -529,7 +533,9 @@ public class GameManager : MonoBehaviour
 	}
 	public void GoToGym()
 	{
-		gymObjects.SetActive(true);
+		isInDialogue = false;
+
+        gymObjects.SetActive(true);
 		jailObjects.SetActive(false);
 		dialogueObjects.SetActive(false);
 		_currentNPC = null;
@@ -538,27 +544,11 @@ public class GameManager : MonoBehaviour
 		RefreshNPCPresence();
 	}
 
-	public void FreePrisonner()
-	{
-		bool kid2WasJailed = _kid2NPC.amJailed;
-		foreach (BeigeNPC prisoner in jailedNPCs)
-		{
-			if (!prisoner.amDead) prisoner.amMissing = false;
-			prisoner.amJailed = false;
-		}
-		jailedNPCs.Clear();
-
-		if (kid2WasJailed && !_kid2NPC.amJailed)
-		{
-			isTeacherFreakingOut = false;
-			nbDayHisteriaTeacher = 0;
-		}
-		GoToGym();
-	}
-
 	public void GoToJail()
 	{
-		if (remainingInteractions < 1)
+		isInDialogue = false;
+
+        if (remainingInteractions < 1)
 		{
 			return;
 		}
@@ -588,4 +578,21 @@ public class GameManager : MonoBehaviour
 	}
 
 	public bool teacherKnowsPlayer = false;
+	public void FreePrisonner()
+	{
+		bool kid2WasJailed = _kid2NPC.amJailed;
+		foreach (BeigeNPC prisoner in jailedNPCs)
+		{
+			if (!prisoner.amDead) prisoner.amMissing = false;
+			prisoner.amJailed = false;
+		}
+		jailedNPCs.Clear();
+
+		if (kid2WasJailed && !_kid2NPC.amJailed)
+		{
+			isTeacherFreakingOut = false;
+			nbDayHisteriaTeacher = 0;
+		}
+		GoToGym();
+	}
 }
