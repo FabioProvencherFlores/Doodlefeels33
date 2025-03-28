@@ -25,6 +25,15 @@ public class ContructionNPC : BeigeNPC, IDialogue
 
 		switch (currentContext)
 		{
+			case SITUATION.PostResDialogue:
+				removeGoodbye = true;
+				currentline = "What in the heaven's fuck just happened? I was... I was dead, wasn't I? Shit...";
+				dialogueOptions.Add("You were.");
+				break;
+			case SITUATION.AngryGreating:
+				currentline = "Well fuck.";
+				dialogueOptions.Add("Yeah. Anyway...");
+				break;
 			case SITUATION.NormalGreating:
 				if (!_saidFirstInfo)
 				{
@@ -83,6 +92,12 @@ public class ContructionNPC : BeigeNPC, IDialogue
 				if (optionID == 0) nextContext = SITUATION.PlayerAskedForInfo;
 				if (optionID == 1) nextContext = SITUATION.PlayerAskedAboutBatteries;
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.PostResDialogue:
+				nextContext = SITUATION.AngryGreating;
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.AngryGreating:
+				if (optionID == 0) nextContext = SITUATION.NormalGreating;
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.PlayerAskedAboutBatteries:
 			case SITUATION.BackedDownFromJailRequest:
 			case SITUATION.PlayerAskedForInfo:
@@ -108,7 +123,8 @@ public class ContructionNPC : BeigeNPC, IDialogue
 
 	public SITUATION GetInitialContext()
 	{
-		return SITUATION.NormalGreating;
+        if (justGotRes) return SITUATION.PostResDialogue;
+        return SITUATION.NormalGreating;
 	}
 
 	public int GetNPCID()
