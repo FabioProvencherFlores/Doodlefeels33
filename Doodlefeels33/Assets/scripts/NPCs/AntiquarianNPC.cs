@@ -13,7 +13,9 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 		}
 	}
 
+	public bool amGoneWillingly = false;
 	bool _askedAboutSymptoms = false;
+	bool _asnweredArtefactQuestion = false;
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
@@ -29,6 +31,7 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 				currentline = "We are all doomed and yet, here we stand in fear of the sun that made us surge with life.";
 				if (GameManager.Instance.playerLookingForBatteries) dialogueOptions.Add("I'm looking for batteries. Got some?");
 				if (GameManager.Instance.playerKnowsAboutKid2Fever && !_askedAboutSymptoms) dialogueOptions.Add("What would you do if you knew someone had fever symptoms?");
+				if (GameManager.Instance.playerLookingForArtefact && !_asnweredArtefactQuestion) dialogueOptions.Add("I heard you possess an artefact. I need to borrow it.");
 				break;
 			case SITUATION.PlayerAskedToGoToJail:
 				removeGoodbye= true;
@@ -64,6 +67,19 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 			case SITUATION.PlayerASkedWhyYouHere:
 				currentline = "We hid in here, and now we are stuck. Maybe the lucky ones are those that saw the Eye, like the Seer by the fire. If it wasn't for her, it'd be out there, roasted to death, or worse.";
 				break;
+			case SITUATION.ArtefactQuest:
+				if (_asnweredArtefactQuestion)
+				{
+					currentline = "As you wish.";
+				}
+				else
+				{
+					removeGoodbye = true;
+					currentline = "Yes. It is a vestige of old traditions. We used to attone to the sun and the moon to appease their wrath. We forgot about those. This moon shard is protecting me against the Solar Eye, but I will willingly give it to you. It will be my last contribution to your path.";
+					dialogueOptions.Add("I don't want to take it from you. You should keep it.");
+					dialogueOptions.Add("I really need it. Thanks for your... sacrifice.");
+				}
+				break;
 			case SITUATION.PlayerAskedAboutBatteries:
 				currentline = "What's in there for me? Ha, you know want... here they are. I'm tired of all this.";
 				dialogueOptions.Add("Thank you...");
@@ -84,6 +100,7 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 				{
 					amMissing = true;
 					amDead = true;
+                    amGoneWillingly = true;
 					GameManager.Instance.GoToGym();
 					return;
 				}
@@ -103,10 +120,16 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 				{
 					if (GameManager.Instance.playerLookingForBatteries) nextContext = SITUATION.PlayerAskedAboutBatteries;
 					else if (GameManager.Instance.playerKnowsAboutKid2Fever && !_askedAboutSymptoms) nextContext = SITUATION.PlayerAskedForInfo;
+					else if (GameManager.Instance.playerLookingForArtefact && !_asnweredArtefactQuestion) nextContext = SITUATION.ArtefactQuest;
                 }
 				else if (optionID == 1)
 				{
 					if (GameManager.Instance.playerKnowsAboutKid2Fever && !_askedAboutSymptoms) nextContext = SITUATION.PlayerAskedForInfo;
+					else if (GameManager.Instance.playerLookingForArtefact && !_asnweredArtefactQuestion) nextContext = SITUATION.ArtefactQuest;
+				}
+				else if (optionID == 2)
+				{
+					nextContext = SITUATION.ArtefactQuest;
 				}
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.BackedDownFromJailRequest:
@@ -121,16 +144,39 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 				if (optionID == 0) nextContext = SITUATION.PlayerAskedAboutSunblind;
 				if (optionID == 1) nextContext = SITUATION.PlayerASkedWhyYouHere;
 				break;
+			case SITUATION.ArtefactQuest:
+				if (!_asnweredArtefactQuestion)
+				{
+					_asnweredArtefactQuestion = true;
+					if (optionID == 0)
+					{
+						nextContext = SITUATION.ArtefactQuest;
+					}
+					else if (optionID == 1)
+					{
+						amMissing = true;
+						amDead = true;
+						amGoneWillingly = true;
+						GameManager.Instance.playerhasArtefact = true;
+						GameManager.Instance.GoToGym();
+						return;
+					}
+					break;
+
+				}
+				goto case SITUATION.PassiveChecks;
 			case SITUATION.PlayerASkedWhyYouHere:
 			case SITUATION.PlayerAskedAboutSunblind:
-			case SITUATION.PassiveChecks:
-			default:
-				if (optionID == 3)
-				{
-					GameManager.Instance.GoToGym();
-				}
-				break;
-		}
+            case SITUATION.PassiveChecks:
+                if (optionID == 3)
+                {
+                    GameManager.Instance.GoToGym();
+                }
+                break;
+            default:
+                Debug.LogError("Dialogue state not supported: " + currentContext.ToString(), this);
+                break;
+        }
 
 		// 4 is jail
 		if (optionID == 4)

@@ -83,6 +83,10 @@ public class GameManager : MonoBehaviour
 	public bool isMonsterHungryTonight = false;
 	public bool playerKnowsAboutKid2Fever = false;
 
+	public bool playerLookingForArtefact = false;
+	public bool playerhasArtefact = false;
+
+	BeigeNPC _lastDeath = null;
 	public void TriggerEscapeQuest()
 	{
 		if (!npcsPrepareToLeave)
@@ -179,6 +183,17 @@ public class GameManager : MonoBehaviour
 
 	public bool playerKnowsKid2Name = false;
 
+	public void ResLastDead()
+	{
+		if (_lastDeath != null)
+		{
+			_lastDeath.amDead = false;
+            _lastDeath.amMissing = false;
+			_lastDeath.justGotRes = true;
+			_lastDeath.amReadyToLeave = false ;
+        }
+	}
+
     void StartNewDay()
     {
         // fade in
@@ -256,6 +271,7 @@ public class GameManager : MonoBehaviour
 				victim.amDead = true;
 				victim.amMissing = true;
 				if (victim.amJailed) _didSomeoneDiedInJail = true;
+				_lastDeath = victim;
 			}
 		}
 		else if (!isMonsterHungryTonight)
@@ -276,6 +292,7 @@ public class GameManager : MonoBehaviour
 					if (_teachNPC.amJailed) _didSomeoneDiedInJail = true;
 
 					noOneDied = false;
+					_lastDeath = _teachNPC;
 					_cookNPC.killedTeacher = true;
 				}
 			}

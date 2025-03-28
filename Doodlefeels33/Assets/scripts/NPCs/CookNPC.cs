@@ -220,14 +220,16 @@ public class CookNPC : BeigeNPC, IDialogue
 					if (optionID == 0) nextContext = SITUATION.SmallTalk;
 				}
 				goto case SITUATION.PassiveChecks;
-			case SITUATION.PassiveChecks:
-			default:
-				if (optionID == 3)
-				{
-					GameManager.Instance.GoToGym();
-				}
-				break;
-		}
+            case SITUATION.PassiveChecks:
+                if (optionID == 3)
+                {
+                    GameManager.Instance.GoToGym();
+                }
+                break;
+            default:
+                Debug.LogError("Dialogue state not supported: " + currentContext.ToString(), this);
+                break;
+        }
 
 		// 4 is jail
 		if (optionID == 4)

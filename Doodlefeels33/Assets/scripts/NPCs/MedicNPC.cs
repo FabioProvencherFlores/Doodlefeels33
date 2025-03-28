@@ -19,7 +19,8 @@ public class MedicNPC : BeigeNPC, IDialogue
 	public bool _isTrustingTowardsPlayer = false;
 	public bool _playerAskedToManyQuestions = false;
 	public bool _willrefusetotalkuntiltomorrow = false;
-
+	bool _hasExplainedQuestion = false;
+	bool _consumedArtefact = false;
 	public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
@@ -53,6 +54,8 @@ public class MedicNPC : BeigeNPC, IDialogue
 
 				}
 				dialogueOptions = new List<string> { "Who are you?", "Why are you standing up there?" };
+				if (_isTrustingTowardsPlayer && !_hasExplainedQuestion)
+					dialogueOptions.Add("How else can you help?");
 				break;
 			case SITUATION.ParanoiaNoneAnswer:
 				removeGoodbye = true;
@@ -67,8 +70,10 @@ public class MedicNPC : BeigeNPC, IDialogue
 				currentline = "Yeah... I need to finish this. Let's talk later!";
 				break;
 			case SITUATION.PlayerASkedWhyYouHere:
-				currentline = "The better question, why are you NOT!";
-
+				if (_isTrustingTowardsPlayer)
+					currentline = "The air is pure, untouched. The Solar Eye floats on the ground. I am never ever touching the ground again, unless the night finally comes. Altough, I might just fall asleep if that happens.";
+				else
+					currentline = "The better question, why are you NOT!";
 				dialogueOptions = new List<string> { "It must be windy up there!", "Do you know more about sunblindness?" };
 				break;
 			case SITUATION.BackedDownFromJailRequest:
@@ -87,11 +92,42 @@ public class MedicNPC : BeigeNPC, IDialogue
 				removeGoodbye = true;
 				dialogueOptions = new List<string> { "Okay, I won't.", "Please, don't make this difficult." };
 				break;
+			case SITUATION.PlayerAskedForInfo:
+				if (GameManager.Instance.noOneDiedYet)
+				{
+					currentline = "I'm a medic, you know. I can't help healthy people. Come back when someone is injured... or worst.";
+				}
+				else if (_hasExplainedQuestion)
+				{
+					currentline = "The kind that will make the Solar Eye itself blink in terror. Now go!.";
+				}
+				else
+				{
+					removeGoodbye = true;
+					currentline = "Dead people, really? You know... I might have an idea or two. It is never too late to cure one's body. Death is just another illness. If I am to help, I'll need an artefact... Ask the Hoarder over by the red doors.";
+					dialogueOptions.Add("What kind of artefact?");
+				}
+				break;
+			case SITUATION.ArtefactQuest:
+				if (_consumedArtefact)
+				{
+					currentline = "It's done.";
+				}
+				else
+				{
+					removeGoodbye = true;
+					currentline = "You have it, I see. The sun and the moon. Blinding light against deafening darkness. You may give it to me, and I shall cure the last trespassed, body and soul. Or, you keep it and its power may protect you, sometime. Think quick.";
+					dialogueOptions.Add("Take it. Bring them back!");
+					dialogueOptions.Add("I'll keep it... for now.");
+				}
+				break;
 			case SITUATION.EscapeQuest:
-				removeGoodbye = true;
-				currentline = "Going outside? Out there?! No way";
-				dialogueOptions.Add("You're right, we should stay.");
-				dialogueOptions.Add("It's our only way, we are going to die here...");
+
+					removeGoodbye = true;
+					currentline = "Going outside? Out there?! No way";
+					dialogueOptions.Add("You're right, we should stay.");
+					dialogueOptions.Add("It's our only way, we are going to die here...");
+				
 				break;
 			case SITUATION.PlayerAskedAboutSunblind:
 				if (_isTrustingTowardsPlayer)
@@ -118,7 +154,7 @@ public class MedicNPC : BeigeNPC, IDialogue
 
 		return currentline;
 	}
-
+	bool _playerGaveArtefact = false;
 	public void ProcessDialogueOption(int optionID)
 	{
 
@@ -140,6 +176,10 @@ public class MedicNPC : BeigeNPC, IDialogue
 				{
 					nextContext = SITUATION.PlayerASkedWhyYouHere;
 				}
+				else if (optionID == 2)
+				{
+					nextContext = SITUATION.PlayerAskedForInfo;
+				}
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.EscapeQuest:
 				_isTrustingTowardsPlayer = true;
@@ -148,7 +188,8 @@ public class MedicNPC : BeigeNPC, IDialogue
 				{
 					amReadyToLeave = true;
 				}
-				nextContext = SITUATION.NormalGreating;
+				if (GameManager.Instance.playerhasArtefact && !_playerGaveArtefact) nextContext = SITUATION.ArtefactQuest;
+				else nextContext = SITUATION.NormalGreating;
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.PlayerAskedName:
 				if (optionID == 0)
@@ -156,7 +197,7 @@ public class MedicNPC : BeigeNPC, IDialogue
 					_isTrustingTowardsPlayer = true;
 					nextContext = SITUATION.PlayerApologized;	
 				}
-				else if (optionID == 0)
+				else if (optionID == 1)
 				{
 					nextContext = SITUATION.PlayerAskedAboutSunblind;
 				}
@@ -239,18 +280,49 @@ public class MedicNPC : BeigeNPC, IDialogue
 					nextContext = SITUATION.PlayerApologized;
 				}
 				break;
+			case SITUATION.ArtefactQuest:
+				if (_consumedArtefact)
+				{
+					GameManager.Instance.ResLastDead();
+				}
+				else
+				{
+					if (optionID == 0)
+					{
+						_consumedArtefact = true;
+						GameManager.Instance.playerhasArtefact = false;
+						nextContext = SITUATION.ArtefactQuest;
+					}
+					else if (optionID == 1)
+					{
+						nextContext = SITUATION.NormalGreating;
+					}
+
+				}
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerAskedForInfo:
+				if (optionID == 0)
+				{
+					GameManager.Instance.playerLookingForArtefact = true;
+                    _hasExplainedQuestion = true;
+                }
+				goto case SITUATION.PassiveChecks;
+			case SITUATION.SmallTalk:
+			case SITUATION.PlayerApologized:
 			case SITUATION.PassiveChecks:
-			default:
 				if (optionID == 3)
 				{
 					GameManager.Instance.GoToGym();
 				}
 				break;
+			default:
+				Debug.LogError("Dialogue state not supported: " + currentContext.ToString(), this);
+				break;
 		}
 
 		// 4 is jail
 		if (optionID == 4)
-		{
+		{	
 			nextContext = SITUATION.PlayerAskedToGoToJail;
 			myData.playerWantsToJailMe = true;
 			myData.playerHasAskedForJail = true;
@@ -261,6 +333,8 @@ public class MedicNPC : BeigeNPC, IDialogue
 	{
 		if (GameManager.Instance.npcsPrepareToLeave && !_playerAskedToLeave)
 			return SITUATION.EscapeQuest;
+		if (GameManager.Instance.playerhasArtefact && !_playerGaveArtefact)
+			return SITUATION.ArtefactQuest;
 		return SITUATION.NormalGreating;
 	}
 

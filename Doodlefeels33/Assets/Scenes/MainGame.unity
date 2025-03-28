@@ -520,6 +520,8 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 97041313d800241fb8b3bf30670aecef, type: 2}
 --- !u!65 &34086358
 BoxCollider:
@@ -1278,7 +1280,10 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 061e55ecfa8a04b6ea5f485323f9584c, type: 2}
+  killedTeacher: 0
 --- !u!65 &221485257
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1940,7 +1945,11 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: f49f5857c22ba475d99a673082dd7176, type: 2}
+  isCured: 0
+  nbNightsInPrison: 0
 --- !u!65 &360984998
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2582,6 +2591,8 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 23ee7f1b786414e4d8da853922fb7547, type: 2}
 --- !u!65 &470158612
 BoxCollider:
@@ -2722,6 +2733,7 @@ MonoBehaviour:
   dialogueObjects: {fileID: 1586550198}
   jailObjects: {fileID: 1430634902}
   dialogueManager: {fileID: 1780261614}
+  isInDialogue: 0
   _cookNPC: {fileID: 221485256}
   _medicNPC: {fileID: 1227650881}
   _antiquarianNPC: {fileID: 1791921096}
@@ -2733,7 +2745,16 @@ MonoBehaviour:
   _fortuneTellerNPC: {fileID: 470158611}
   _contructionNPC: {fileID: 1852048007}
   bloodSplatter: {fileID: 701454842}
+  playerLookingForBatteries: 0
+  playerFoundBatteries: 0
+  npcsPrepareToLeave: 0
+  isMonsterHungryTonight: 0
+  playerKnowsAboutKid2Fever: 0
+  playerLookingForArtefact: 0
+  playerhasArtefact: 0
   kid1WillKillMe: 0
+  playerKnowsKid2Name: 0
+  noOneDiedYet: 1
   kid2WasJailedToday: 0
   isTeacherFreakingOut: 0
   teacherKnowsPlayer: 0
@@ -3244,6 +3265,8 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 605659e65804a46b2a7959d207e49704, type: 2}
 --- !u!1 &701454842
 GameObject:
@@ -4336,6 +4359,8 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 1118d574d567a493aad7e93dbcc2d255, type: 2}
 --- !u!65 &1060835771
 BoxCollider:
@@ -4747,6 +4772,8 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: ec59451b02d194bb2a345c047c11bb1c, type: 2}
   _isTrustingTowardsPlayer: 0
   _playerAskedToManyQuestions: 0
@@ -5543,7 +5570,10 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 529e265304db840ae9317202f0394dce, type: 2}
+  amGoneWillingly: 0
 --- !u!65 &1791921097
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5952,6 +5982,8 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 391465b566bd44dd7ba671e63ab46715, type: 2}
 --- !u!65 &1852048008
 BoxCollider:
@@ -6281,6 +6313,8 @@ MonoBehaviour:
   amMissing: 0
   amDead: 0
   amJailed: 0
+  amReadyToLeave: 0
+  isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: e813a364a25eb41e49db20774d2f8103, type: 2}
   kid1KilledPlayer: 0
 --- !u!1 &1991060835
