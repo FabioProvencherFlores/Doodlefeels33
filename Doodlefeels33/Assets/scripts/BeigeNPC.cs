@@ -86,6 +86,7 @@ public class BeigeNPC : MonoBehaviour
 	protected SITUATION nextContext;
 
 	protected bool removeGoodbye = false;
+	public bool isVet = false;
 	public bool IsGoodbyeADefaultOption()
 	{
 		return !removeGoodbye;

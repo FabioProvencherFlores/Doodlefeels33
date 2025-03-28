@@ -298,6 +298,24 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
+		if (_veteranNPC.amJailed && !_veteranNPC.amDead && _veteranNPC.willKillNextJailNeibour)
+		{
+			foreach (BeigeNPC prisoner in jailedNPCs)
+			{
+				if (!prisoner.isVet)
+				{
+					prisoner.amDead = true;
+					prisoner.amMissing= true;
+					_didSomeoneDiedInJail = true;
+					noOneDied = false;
+					_veteranNPC.willKillNextJailNeibour = false;
+                    _veteranNPC.killedOnCommand = true;
+
+
+                }
+			}
+		}
+
 		if (npcsPrepareToLeave)
 		{
 			if (escapeQuestStart + 2 < daysSinceStart)

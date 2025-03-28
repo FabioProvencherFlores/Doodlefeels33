@@ -19,7 +19,16 @@ public class VeteranNPC : BeigeNPC, IDialogue
 
 	bool _playerAskedToLeave = false;
 	int saidBackstory = 0;
-	public string GetNextDialogueString()
+
+	public bool willKillNextJailNeibour = false;
+	public bool killedOnCommand = false;
+
+    private void Awake()
+    {
+		isVet = true;
+    }
+
+    public string GetNextDialogueString()
 	{
 		removeGoodbye = false;
 		dialogueOptions.Clear();
@@ -31,7 +40,12 @@ public class VeteranNPC : BeigeNPC, IDialogue
 		switch (currentContext)
 		{
 			case SITUATION.NormalGreating:
-				if (amReadyToLeave)
+				if (killedOnCommand)
+				{
+					killedOnCommand = false;
+					currentline = "I did as you asked, captain. I would do it again.";
+				}
+				else if (amReadyToLeave)
 				{
 					currentline = "Anything else before we leave?";
 				}
@@ -77,31 +91,39 @@ public class VeteranNPC : BeigeNPC, IDialogue
 				{
 					currentline = "I was in the trained forced. I've done my duty. I have killed before. Don't worry, I'm not planning in steping out of retirement.";
 					saidBackstory++;
+					dialogueOptions.Add("Do you think you could do an exception, just this one time?");
                 }
 				else if (saidBackstory == 2)
 				{
 					currentline = "When the Solar Eye awoke, I was at the park. Luckily I suffered a heat strike and passed out... I've seen what the Eye can do, how it changes people... They aren't people anymore."; 
+					dialogueOptions.Add("Then, you know how dangerous it is to be here with them. I need some help with the sunblind people.");
 					saidBackstory++;
                 }
 				else
 				{
 					currentline = "Believe me, I wish I didn't. Anything else?";
 				}
+
 				break;
 			case SITUATION.PlayerAskedAboutSunblind:
 				currentline = "I've seen strange behaviours in the Outside times. Scary ones, at that. It usually manifests with light fever and headaches. Maybe the doctor up there can give you more information?";
-				dialogueOptions.Add("You seem pretty knowledgeable...");
+				if (saidBackstory == 0) dialogueOptions.Add("You seem pretty knowledgeable...");
+				else dialogueOptions.Add("Tell me more of yourself. What else have you seen?");
 				break;
 			case SITUATION.PlayerAskedAboutDisappearance:
 				currentline = "If there's blood, there's bad omen. Someone among us is doing this. We need to find them... quick.";
 				dialogueOptions.Add("How do you know all this?");
 				dialogueOptions.Add("I'm concerned about it too. Anyone I should check?");
+				dialogueOptions.Add("We need to put an end to this. You, and I. Will you help me?");
 				break;
 			case SITUATION.EscapeQuest:
 				removeGoodbye= true;
 				currentline = "I'll follow you, captain. Just tell me what is best!";
 				dialogueOptions.Add("It's best if we stay here.");
 				dialogueOptions.Add("You should pack light, there is a long road ahead.");
+				break;
+			case SITUATION.NPCWarning:
+				currentline = "I hear you crystal clear. Don't ask for details. Just put me in that room with whoever you need me to fix, and I'll fix them. They'll be out of your hands. Just this one time... Go ahead captain, chain me up.";
 				break;
 			case SITUATION.PlayerAskedToGoToJail:
 				removeGoodbye = true;
@@ -164,11 +186,17 @@ public class VeteranNPC : BeigeNPC, IDialogue
 			case SITUATION.PlayerAskedAboutDisappearance:
 				if (optionID == 0) nextContext = SITUATION.PlayerASkedWhyYouHere;
 				if (optionID == 1) nextContext = SITUATION.PlayerAskedForInfo;
+				if (optionID == 2) nextContext = SITUATION.NPCWarning;
                 goto case SITUATION.PassiveChecks;
 			case SITUATION.PlayerAskedAboutSunblind:
 				if (optionID == 0) nextContext = SITUATION.PlayerASkedWhyYouHere;
                 goto case SITUATION.PassiveChecks;
 			case SITUATION.PlayerASkedWhyYouHere:
+				if (optionID == 0) nextContext = SITUATION.NPCWarning;
+                goto case SITUATION.PassiveChecks;
+			case SITUATION.NPCWarning:
+				willKillNextJailNeibour = true;
+                goto case SITUATION.PassiveChecks;
 			case SITUATION.BackedDownFromJailRequest:
 			case SITUATION.PassiveChecks:
 				if (optionID == 3)
