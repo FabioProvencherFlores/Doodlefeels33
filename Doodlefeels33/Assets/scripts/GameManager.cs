@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
 	int escapeQuestStart = 0;
 
 	public bool isMonsterHungryTonight = false;
+	public bool playerKnowsAboutKid2Fever = false;
 
 	public void TriggerEscapeQuest()
 	{

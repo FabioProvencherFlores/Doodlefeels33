@@ -48,13 +48,14 @@ public class MedicNPC : BeigeNPC, IDialogue
 					}
 					else
 					{
-						currentline = "Hello my dear...";
+						currentline = "Yes?	";
 					}
 
 				}
 				dialogueOptions = new List<string> { "Who are you?", "Why are you standing up there?" };
 				break;
 			case SITUATION.ParanoiaNoneAnswer:
+				removeGoodbye = true;
 				currentline = "You sure ask a lot of questions for a new-comer. You won't get any anwers from me!";
 				dialogueOptions = new List<string> { "Why? I'm just trying to help here.", "Why are you standing up there?", "I have this light headache..." };
 				break;
@@ -153,7 +154,7 @@ public class MedicNPC : BeigeNPC, IDialogue
 				if (optionID == 0)
 				{
 					_isTrustingTowardsPlayer = true;
-					nextContext = SITUATION.PlayerApologized;
+					nextContext = SITUATION.PlayerApologized;	
 				}
 				else if (optionID == 0)
 				{
@@ -163,7 +164,7 @@ public class MedicNPC : BeigeNPC, IDialogue
 			case SITUATION.ParanoiaNoneAnswer:
 				if (optionID == 0)
 				{
-					_isTrustingTowardsPlayer = false;
+					_isTrustingTowardsPlayer = true;
 					nextContext = SITUATION.NormalGreating;
 				}
 				if (optionID == 1)

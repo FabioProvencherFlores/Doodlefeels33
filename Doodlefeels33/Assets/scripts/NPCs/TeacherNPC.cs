@@ -216,6 +216,7 @@ public class TeacherNPC : BeigeNPC, IDialogue
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.PlayerAskedAboutSunblind:
 				_isFriendlyTowardsPlayer = true;
+				if (_isFriendlyTowardsPlayer) GameManager.Instance.playerKnowsAboutKid2Fever = true;
 				if (optionID == 0) nextContext = SITUATION.SmallTalk;
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.NormalGreating:
