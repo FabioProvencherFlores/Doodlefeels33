@@ -84,7 +84,7 @@ public class VeteranNPC : BeigeNPC, IDialogue
 				print(saidBackstory);
 				if (saidBackstory == 0)
 				{
-					currentline = "I haven't always been old, y'know. Let's just say I've seen my fair share of death in my carrier.";
+					currentline = "I haven't always been old, y'know. Let's just say I've seen my fair share of death in my carreer.";
 					saidBackstory++;
                 }
 				else if (saidBackstory == 1)

@@ -29,7 +29,7 @@ public class Kid1NPC : BeigeNPC, IDialogue
 		{
 			case SITUATION.NPCAggroPlayer:
 				removeGoodbye = true;
-				currentline = "I told you I would...";
+				currentline = "I told you I would kill you...";
 				dialogueOptions.Add("Stop this nonesense!");
 				dialogueOptions.Add("I won't hesitate to hurt a child.");
 				dialogueOptions.Add("Calm down...");

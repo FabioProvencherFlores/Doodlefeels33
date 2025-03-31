@@ -96,7 +96,7 @@ public class CookNPC : BeigeNPC, IDialogue
 				currentline = "Good.";
 				break;
 			case SITUATION.PlayerAskedToGoToJail:
-				currentline = "What fuck, why?";
+				currentline = "What the fuck, why?";
 				removeGoodbye = true;
 				dialogueOptions = new List<string> { "I Changed my mind...", "Get in the cell." };
 				break;
@@ -105,7 +105,7 @@ public class CookNPC : BeigeNPC, IDialogue
 				dialogueOptions = new List<string> { "Nevermind." };
 				break;
 			case SITUATION.PlayerAskedHowLong:
-				currentline = "Been here a while. I think only that teacher was here before I was. Days get fuzzy, can't remember much.";
+				currentline = "Been here a while. I think only that teacher was here before me. Days get fuzzy, can't remember much.";
 				dialogueOptions = new List<string> { "Good to know!" };
 				break;
 			case SITUATION.PlayerAskedWhatYouDoing:
@@ -120,7 +120,7 @@ public class CookNPC : BeigeNPC, IDialogue
 					else if (_numberOfWarnings == 1)
 						currentline = "She's still screaming. Someone needs to shut her up.";
 					else if (_numberOfWarnings == 2)
-						currentline = "If you don't, I'll do it.";
+						currentline = "If you don't something about her, I'll do it.";
 				
 					dialogueOptions.Add("I'm on it.");
 				}
