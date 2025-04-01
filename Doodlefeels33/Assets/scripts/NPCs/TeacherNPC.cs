@@ -231,6 +231,7 @@ public class TeacherNPC : BeigeNPC, IDialogue
 			case SITUATION.PlayerAskedAboutBatteries:
 				GameManager.Instance.playerFoundBatteries = true;
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.BackedDownFromJailRequest:
 			case SITUATION.PassiveChecks:
 				if (optionID == 3)
 				{

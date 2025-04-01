@@ -84,6 +84,9 @@ public class MedicNPC : BeigeNPC, IDialogue
 					, "What was your name, before all this?"
 					, "I'm sorry."};
 				break;
+			case SITUATION.PlayerInsultedMe:
+				currentline = "Die of dysentry.";
+					break;
 			case SITUATION.PlayerApologized:
 				currentline = "I know you don't mean harm, dear. It's just, with the disappearings and all... I think I need to rest.";
 				break;
@@ -309,6 +312,7 @@ public class MedicNPC : BeigeNPC, IDialogue
 				goto case SITUATION.PassiveChecks;
 			case SITUATION.SmallTalk:
 			case SITUATION.PlayerApologized:
+			case SITUATION.PlayerInsultedMe:
 			case SITUATION.PassiveChecks:
 				if (optionID == 3)
 				{

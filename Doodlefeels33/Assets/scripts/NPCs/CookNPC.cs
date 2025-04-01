@@ -92,6 +92,7 @@ public class CookNPC : BeigeNPC, IDialogue
 
 			case SITUATION.PlayerAskedWhereAreWe:
 				currentline = "You got sunblind, or what? Go bother that sleepy doctor over there instead.";
+				dialogueOptions.Add("What can you tell me about the doctor?");
 				break;
 			case SITUATION.PlayerApologized:
 				currentline = "Good.";
@@ -109,6 +110,9 @@ public class CookNPC : BeigeNPC, IDialogue
 				currentline = "Been here a while. I think only that teacher was here before me. Days get fuzzy, can't remember much.";
 				dialogueOptions = new List<string> { "Good to know!" };
 				break;
+			case SITUATION.PlayerAskedAboutDoctor:
+				currentline = "The sleepy doctor you mean? The doc is our sunblind expert. So all knowing that their head is halfway cooked by the sun. You two have that in common!";
+					break;
 			case SITUATION.PlayerAskedWhatYouDoing:
 				currentline = "I'm making diner. You blind?";
 				dialogueOptions = new List<string> { "Ok, that's nice." };
@@ -221,6 +225,11 @@ public class CookNPC : BeigeNPC, IDialogue
 					if (optionID == 0) nextContext = SITUATION.SmallTalk;
 				}
 				goto case SITUATION.PassiveChecks;
+            case SITUATION.PlayerAskedWhereAreWe:
+				if (optionID == 0) nextContext = SITUATION.PlayerAskedAboutDoctor;
+				goto case SITUATION.PassiveChecks;
+            case SITUATION.PlayerAskedAboutSunblind:
+            case SITUATION.PlayerAskedAboutDoctor:
             case SITUATION.PassiveChecks:
                 if (optionID == 3)
                 {
