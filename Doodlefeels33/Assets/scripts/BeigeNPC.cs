@@ -57,6 +57,7 @@ public enum SITUATION
 	PlayerAskedForInfo,
 	PlayerAskedAboutKid2,
 	PlayerAskedAboutDisappearance,
+	PlayerAskedAboutDoctor,
 	NPCWarning,
 	NPCAggroPlayer,
 	PlayerAskedAboutBatteries,

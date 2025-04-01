@@ -43,6 +43,11 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 				currentline = "Ok.";
 				if (GameManager.Instance.playerLookingForBatteries) dialogueOptions.Add("Nevermind that. Do you have batteries to spare?");
 				break;
+			case SITUATION.PlayerInsultedMe:
+				removeGoodbye = true;
+				currentline = "Goodbye.";
+				dialogueOptions.Add("Wait! Where are you going?!");
+				break;
 			case SITUATION.PlayerAskedForInfo:
 				currentline = "What do you want me to tell you. I am no physician. You should ask the doctor over there. They are on that stupid bed that passes as a lab.";
 				dialogueOptions.Add("What else can you tell me?.");
@@ -60,7 +65,7 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 				break;
 			case SITUATION.NPCWarning:
 				removeGoodbye = true;
-				currentline = "And why wouldn't you be? The sun has decided to kill us. It drove us made. Do you seriously think we have a chance to escape the Solar Eye?";
+				currentline = "And why wouldn't you be? The sun has decided to kill us. It drove us mad. Do you seriously think we have a chance to escape the Solar Eye?";
 				dialogueOptions.Add("Yes, we are safe here.");
 				dialogueOptions.Add("We are gaining time, nothing more.");
 				break;
@@ -96,15 +101,16 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 		{
 			case SITUATION.PlayerAskedToGoToJail:
 				if (optionID == 0) nextContext = SITUATION.BackedDownFromJailRequest;
-				if (optionID == 1)
-				{
-					amMissing = true;
-					amDead = true;
-                    amGoneWillingly = true;
-					GameManager.Instance.GoToGym();
-					return;
-				}
+				if (optionID == 1) nextContext = SITUATION.PlayerInsultedMe;
+
 				goto case SITUATION.PassiveChecks;
+			case SITUATION.PlayerInsultedMe:
+				amMissing = true;
+				amDead = true;
+                amGoneWillingly = true;
+				GameManager.Instance.GoToGym();
+				break;
+
 			case SITUATION.PlayerAskedAboutBatteries:
 				GameManager.Instance.playerFoundBatteries = true;
 				if (optionID != 4)

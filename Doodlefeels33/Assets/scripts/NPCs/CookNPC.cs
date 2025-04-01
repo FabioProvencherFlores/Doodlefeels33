@@ -85,7 +85,7 @@ public class CookNPC : BeigeNPC, IDialogue
 				else
 				{
 					currentline = "Hmph.";
-					dialogueOptions = new List<string> { "I didn't get your name...", "", "Where are we?" };
+					dialogueOptions = new List<string> { "I didn't get your name...", "Where are we?" };
 				}
 				_numberOfSmalltalk++;
 				break;
@@ -112,7 +112,7 @@ public class CookNPC : BeigeNPC, IDialogue
 				break;
 			case SITUATION.PlayerAskedAboutDoctor:
 				currentline = "The sleepy doctor you mean? The doc is our sunblind expert. So all knowing that their head is halfway cooked by the sun. You two have that in common!";
-					break;
+				break;
 			case SITUATION.PlayerAskedWhatYouDoing:
 				currentline = "I'm making diner. You blind?";
 				dialogueOptions = new List<string> { "Ok, that's nice." };
@@ -173,7 +173,8 @@ public class CookNPC : BeigeNPC, IDialogue
 				}
 				else if (optionID == 1)
 				{
-					nextContext = SITUATION.SmallTalk;
+					if (_numberOfSmalltalk > 1) nextContext = SITUATION.PlayerAskedWhereAreWe;
+					else nextContext = SITUATION.SmallTalk;
 				}
 				else if (optionID == 2)
 				{
