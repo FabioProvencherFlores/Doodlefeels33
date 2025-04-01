@@ -6,6 +6,7 @@ public class CookNPC : BeigeNPC, IDialogue
 	[Header("Dialogue Data")]
 	[SerializeField]
 	public  Material customSprite;
+	public  Material customMurdererSprite;
 	public Material spriteMaterial
 	{
 		get
@@ -266,6 +267,11 @@ public class CookNPC : BeigeNPC, IDialogue
 
 	public void InitNewDialogue()
 	{
+		if(killedTeacher)
+		{
+			customSprite = customMurdererSprite;
+
+		}
 		myData.shouldGreatPlayer = true;
 		currentContext = GetInitialContext();
 		nextContext	= currentContext;

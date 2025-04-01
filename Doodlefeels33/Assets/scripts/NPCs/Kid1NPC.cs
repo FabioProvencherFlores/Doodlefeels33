@@ -6,6 +6,8 @@ public class Kid1NPC : BeigeNPC, IDialogue
 	[Header("Dialogue Data")]
 	[SerializeField]
 	public Material customSprite;
+	public Material customMurdererSprite;
+
 	public Material spriteMaterial
 	{
 		get
@@ -133,6 +135,10 @@ public class Kid1NPC : BeigeNPC, IDialogue
 
 	public void InitNewDialogue()
 	{
+		if(GameManager.Instance.kid1WillKillMe && !myData.playerWantsToJailMe)
+		{
+			customSprite = customMurdererSprite;
+		}
 		currentContext = GetInitialContext();
 		nextContext = currentContext;
 		myData.Reset();

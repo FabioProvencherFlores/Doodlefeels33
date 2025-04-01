@@ -521,8 +521,12 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 97041313d800241fb8b3bf30670aecef, type: 2}
+  willKillNextJailNeibour: 0
+  killedOnCommand: 0
 --- !u!65 &34086358
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1281,8 +1285,11 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 061e55ecfa8a04b6ea5f485323f9584c, type: 2}
+  customMurdererSprite: {fileID: 2100000, guid: d40fcf367a5174460b172a393506b269, type: 2}
   killedTeacher: 0
 --- !u!65 &221485257
 BoxCollider:
@@ -1946,6 +1953,8 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: f49f5857c22ba475d99a673082dd7176, type: 2}
   isCured: 0
@@ -2592,6 +2601,8 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 23ee7f1b786414e4d8da853922fb7547, type: 2}
 --- !u!65 &470158612
@@ -3266,6 +3277,8 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 605659e65804a46b2a7959d207e49704, type: 2}
 --- !u!1 &701454842
@@ -4360,6 +4373,8 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 1118d574d567a493aad7e93dbcc2d255, type: 2}
 --- !u!65 &1060835771
@@ -4773,6 +4788,8 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: ec59451b02d194bb2a345c047c11bb1c, type: 2}
   _isTrustingTowardsPlayer: 0
@@ -5571,6 +5588,8 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 529e265304db840ae9317202f0394dce, type: 2}
   amGoneWillingly: 0
@@ -5983,6 +6002,8 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: 391465b566bd44dd7ba671e63ab46715, type: 2}
 --- !u!65 &1852048008
@@ -6314,8 +6335,11 @@ MonoBehaviour:
   amDead: 0
   amJailed: 0
   amReadyToLeave: 0
+  justGotRes: 0
+  isVet: 0
   isLeavingToGym: 0
   customSprite: {fileID: 2100000, guid: e813a364a25eb41e49db20774d2f8103, type: 2}
+  customMurdererSprite: {fileID: 2100000, guid: d219c4b929f2d45d99f67e5b069d5d16, type: 2}
   kid1KilledPlayer: 0
 --- !u!1 &1991060835
 GameObject:
@@ -7597,6 +7621,10 @@ PrefabInstance:
       propertyPath: chain_click_sfx
       value: 
       objectReference: {fileID: 134771830}
+    - target: {fileID: 5187346102735907281, guid: 7e985efe4ae9b4db6bf8866577e7ee91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -2
+      objectReference: {fileID: 0}
     - target: {fileID: 6564273950682060765, guid: 7e985efe4ae9b4db6bf8866577e7ee91, type: 3}
       propertyPath: click_sfx
       value: 
