@@ -67,6 +67,16 @@ public class GameManager : MonoBehaviour
 	[SerializeField] public TeacherNPC _teachNPC;
 	[SerializeField] public FortuneTellerNPC _fortuneTellerNPC;
 	[SerializeField] public ContructionNPC _contructionNPC;
+	[Header("Blood Splatter")]
+	[SerializeField] public GameObject _cookNPCBloodSplatter;
+	[SerializeField] public GameObject _medicNPCBloodSplatter;
+	[SerializeField] public GameObject _antiquarianNPCBloodSplatter;
+	[SerializeField] public GameObject _itNPCBloodSplatter;
+	[SerializeField] public GameObject _kid1NPCBloodSplatter;
+	[SerializeField] public GameObject _veteranNPCBloodSplatter;
+	[SerializeField] public GameObject _teachNPCBloodSplatter;
+	[SerializeField] public GameObject _fortuneTellerNPCBloodSplatter;
+	[SerializeField] public GameObject _contructionNPCBloodSplatter;
 
 	[Header("The killing")]
 	[SerializeField]
@@ -191,6 +201,7 @@ public class GameManager : MonoBehaviour
             _lastDeath.amMissing = false;
 			_lastDeath.justGotRes = true;
 			_lastDeath.amReadyToLeave = false ;
+			_lastDeath.amMurderedInGym = false ;
         }
 	}
 
@@ -271,6 +282,7 @@ public class GameManager : MonoBehaviour
 				victim.amDead = true;
 				victim.amMissing = true;
 				if (victim.amJailed) _didSomeoneDiedInJail = true;
+				else victim.amMurderedInGym = true;
 				_lastDeath = victim;
 			}
 		}
@@ -290,6 +302,7 @@ public class GameManager : MonoBehaviour
 					_teachNPC.amDead = true;
 					_teachNPC.amMissing = true;
 					if (_teachNPC.amJailed) _didSomeoneDiedInJail = true;
+					else _teachNPC.amMurderedInGym = true;
 
 					noOneDied = false;
 					_lastDeath = _teachNPC;
@@ -551,6 +564,17 @@ public class GameManager : MonoBehaviour
 		{
 			bloodSplatter.SetActive(true);
 		}
+
+
+		_cookNPCBloodSplatter.SetActive(_cookNPC.amMurderedInGym);
+		_veteranNPCBloodSplatter.SetActive(_veteranNPC.amMurderedInGym);
+		_fortuneTellerNPCBloodSplatter.SetActive(_fortuneTellerNPC.amMurderedInGym);
+		_teachNPCBloodSplatter.SetActive(_teachNPC.amMurderedInGym);
+		_antiquarianNPCBloodSplatter.SetActive(_antiquarianNPC.amMurderedInGym);
+		_itNPCBloodSplatter.SetActive(_itNPC.amMurderedInGym);
+		_medicNPCBloodSplatter.SetActive(_medicNPC.amMurderedInGym);
+		_kid1NPCBloodSplatter.SetActive(_kid1NPC.amMurderedInGym);
+		_contructionNPCBloodSplatter.SetActive(_contructionNPC.amMurderedInGym);
 
 	}
 

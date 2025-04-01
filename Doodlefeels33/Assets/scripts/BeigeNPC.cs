@@ -81,6 +81,7 @@ public class BeigeNPC : MonoBehaviour
 	public bool amReadyToLeave = false;
 
 	public bool justGotRes = false;
+	public bool amMurderedInGym = false;
 
 	protected SITUATION currentContext;
 	protected SITUATION nextContext;
