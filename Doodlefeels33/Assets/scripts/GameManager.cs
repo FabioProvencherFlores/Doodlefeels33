@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
 
 	public IEnumerator GotToFailureScreen()
 	{
-		yield return new WaitForSeconds(1);
+		yield return new WaitForSeconds(3);
 
 		// change scene here
 		Debug.Log(":(");
