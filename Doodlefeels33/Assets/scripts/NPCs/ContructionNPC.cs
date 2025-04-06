@@ -56,7 +56,7 @@ public class ContructionNPC : BeigeNPC, IDialogue
 				currentline = "You want darkness? Get in there and shut that fucking red door behind. That's the only safe place remaining to be honest.";
 				break;
 			case SITUATION.PlayerAskedAboutBatteries:
-				currentline = "Good for you. Hell, I might have some in my old flashlight. I lent it to the old lady with the kids. If you could get it for me, that'd be great.";
+				currentline = "Good for you. Hell, I might have some in my old flashlight. I lent it to the old lady with the kids. If you want them go ask her.";
 				break;
 			case SITUATION.PlayerAskedToGoToJail:
 				removeGoodbye = true;

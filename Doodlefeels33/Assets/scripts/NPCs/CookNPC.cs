@@ -65,11 +65,11 @@ public class CookNPC : BeigeNPC, IDialogue
 					_alreadyaskedName = true;
 					currentline = "Nowadays, I'm just the cook. That's fine by me.";
 				}
-				dialogueOptions = new List<string> { "Have you been here long?", "What are you doing?." };
+				dialogueOptions = new List<string> { "Have you been here long?", "What are you doing?" };
 				break;
 			case SITUATION.BackedDownFromJailRequest:
 				currentline = "I swear, you pull some stupid joke like that on me again...";
-				dialogueOptions = new List<string> { "Have you been here long?", "What are you doing?." };
+				dialogueOptions = new List<string> { "Have you been here long?", "What are you doing?" };
 				break;
 			case SITUATION.SmallTalk:
 				if (_numberOfSmalltalk == 0)
@@ -131,7 +131,7 @@ public class CookNPC : BeigeNPC, IDialogue
 				}
 				else
 				{
-					currentline = "I told you I'd do it, didn't I? Don't push me...";
+					currentline = "I told you I'd do it, didn't I? I told you I would do something about that old hag. Don't push me...";
 				}
 				break;
 

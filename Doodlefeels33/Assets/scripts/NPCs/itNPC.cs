@@ -29,7 +29,7 @@ public class itNPC : BeigeNPC, IDialogue
 		{
 			case SITUATION.NormalGreating:
 				if (_numberOfWorkInterruptions == 0) currentline = "I heard noise over the radio but the battery is dead. Maybe I can some juice out of this. The transistor is busted... Ho, can I help you?";
-				else if (_numberOfWorkInterruptions == 1) currentline = "I just need this part. Come on, just turn on. On last time?";
+				else if (_numberOfWorkInterruptions == 1) currentline = "I just need this part. Come on, just turn on. One last time?";
 				else if (_numberOfWorkInterruptions == 2) currentline = "Batteries. I need batteries. Maybe that old hag got some left... Yes. Maybe I can... borrow... some. I need batteries. Ho, didn't see you there.";
 				else if (_numberOfWorkInterruptions == 3) currentline = "Need power. Need light. Need power. Need more. Need power. Need. Power. More. Light.";
 				else if (_numberOfWorkInterruptions == 4) currentline = "What?";
@@ -47,7 +47,7 @@ public class itNPC : BeigeNPC, IDialogue
 			case SITUATION.EscapeQuest:
 				if (!_gaveInfoAboutEscape)
 				{
-					currentline = "Hold on. I think it works, I'm receiving something... Something about a sage haven up north. Snow clouds protect people from the Solar Eye! We need to leave soon! 3 days and I'm out!";
+					currentline = "Hold on. I think it's working, I'm receiving something... Something about a safe haven up north. Snow clouds protect people from the Solar Eye! We need to leave soon! 3 days and I'm out!";
 				}
 				else
 				{

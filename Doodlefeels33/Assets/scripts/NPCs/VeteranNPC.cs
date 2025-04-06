@@ -74,9 +74,9 @@ public class VeteranNPC : BeigeNPC, IDialogue
 					}
 					else
 					{
-						currentline = "I heard some strange noises at night coming from the folks over there. You should check it surely out.";
+						currentline = "I heard some strange noises at night coming from the folks over there. Surely, you should check them out.";
 						dialogueOptions.Add("You mean that solitary lad over there?");
-						dialogueOptions.Add("You're refering to the group in the corner?");
+						dialogueOptions.Add("You're referring to the group in the corner?");
 					}
 				}
 				break;

@@ -50,7 +50,7 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 				break;
 			case SITUATION.PlayerAskedForInfo:
 				currentline = "What do you want me to tell you. I am no physician. You should ask the doctor over there. They are on that stupid bed that passes as a lab.";
-				dialogueOptions.Add("What else can you tell me?.");
+				dialogueOptions.Add("What else can you tell me?");
 				dialogueOptions.Add("You seem scared.");
 				break;
 			case SITUATION.PlayerAskedAboutSunblind:
@@ -80,13 +80,13 @@ public class AntiquarianNPC : BeigeNPC, IDialogue
 				else
 				{
 					removeGoodbye = true;
-					currentline = "Yes. It is a vestige of old traditions. We used to attone to the sun and the moon to appease their wrath. We forgot about those. This moon shard is protecting me against the Solar Eye, but I will willingly give it to you. It will be my last contribution to your path.";
+					currentline = "Yes. It is a vestige of old traditions. We used to atone to the sun and the moon to appease their wrath. We forgot about those. This moon shard is protecting me against the Solar Eye, but I will willingly give it to you. It will be my last contribution to your path.";
 					dialogueOptions.Add("I don't want to take it from you. You should keep it.");
 					dialogueOptions.Add("I really need it. Thanks for your... sacrifice.");
 				}
 				break;
 			case SITUATION.PlayerAskedAboutBatteries:
-				currentline = "What's in there for me? Ha, you know want... here they are. I'm tired of all this.";
+				currentline = "What's in there for me? Ha, you know what... here they are. I'm tired of all this.";
 				dialogueOptions.Add("Thank you...");
 				break;
 		}

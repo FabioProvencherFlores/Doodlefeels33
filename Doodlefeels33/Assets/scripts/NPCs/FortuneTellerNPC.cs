@@ -38,7 +38,7 @@ public class FortuneTellerNPC : BeigeNPC, IDialogue
 				}
 				else
 				{
-					currentline = "I can see the shadows move like the eyelashes of the blinking sun. They tell me want they forsee, what is to come, and what they see in our eyes. The Solar Eye sees all!";
+					currentline = "I can see the shadows move like the eyelashes of the blinking sun. They tell me what they forsee, what is to come, and what they see in our eyes. The Solar Eye sees all!";
 				}
 				break;
 			case SITUATION.NormalGreating:
@@ -48,7 +48,7 @@ public class FortuneTellerNPC : BeigeNPC, IDialogue
 				break;
 			case SITUATION.EscapeQuest:
 				removeGoodbye = true;
-				currentline = "I forsee a lot of Death outside. The Solar Eye is upon us, waiting. Are you sure you want us to leave?";
+				currentline = "I foresee a lot of Death outside. The Solar Eye is upon us, waiting. Are you sure you want us to leave?";
 				dialogueOptions.Add("I trust your visions. Let's stay.");
 				dialogueOptions.Add("Yes, we need to leave. Now.");
 				break;
