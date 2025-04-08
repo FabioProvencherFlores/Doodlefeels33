@@ -112,16 +112,16 @@ public class TeacherNPC : BeigeNPC, IDialogue
 				dialogueOptions.Add("Is something wrong?");
 				break;
 			case SITUATION.EscapeQuest:
-				if (_playerAskedToLeave)
+				if (amReadyToLeave)
 				{
 					currentline = "I'm packing. Can't wait to be out of this hell hole!";
+					dialogueOptions.Add("You're doing great!");
 				}
 				else
 				{
 					removeGoodbye = true;
 					currentline = "I heard about the escape plan. I'm not risking my baby out there for some idiot's dellusion";
 					dialogueOptions.Add("You are right. We should stay here");
-					GameManager.Instance.teacherKnowsPlayer = true;
 					if (GameManager.Instance.playerKnowsKid2Name) dialogueOptions.Add("You should go, both of you. Think of Thimoty...");
 				}
 				break;
@@ -203,7 +203,8 @@ public class TeacherNPC : BeigeNPC, IDialogue
 					nextContext = SITUATION.EscapeQuest;
 					amReadyToLeave = true;
 				}
-				break;
+                GameManager.Instance.teacherKnowsPlayer = true;
+                break;
 			case SITUATION.PlayerAskedAboutKid2:
 				GameManager.Instance.teacherKnowsPlayer = true;
 				if (optionID == 0) nextContext = SITUATION.PlayerAskedAboutSunblind;
